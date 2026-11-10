@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Bureau</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bureau">
+<meta name="theme-color" content="#000000">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap">
+<style>
+:root{--bg:#000;--card:#0E1110;--line:rgba(255,255,255,.09);--fg:#EEF6F3;--mut:#86938E;--acc:#4FF0D2;--up:#5CDB8B;--down:#FF6B6B;--warn:#FFD166}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:'Space Grotesk',system-ui,sans-serif;-webkit-user-select:none;user-select:none}
+body{padding:calc(env(safe-area-inset-top) + 8px) calc(env(safe-area-inset-right) + 10px) calc(env(safe-area-inset-bottom) + 8px) calc(env(safe-area-inset-left) + 10px);transition:filter 1s}
+body.dim{filter:brightness(.45)}
+button,input,select{font-family:inherit;color:inherit}
+button{cursor:pointer}
+#wrap{height:100%;display:grid;gap:8px;grid-template-columns:1.05fr 1fr 1fr;transition:transform 2s}
+.col{display:flex;flex-direction:column;gap:8px;min-height:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;min-height:0;position:relative}
+.grow{flex:1;display:flex;flex-direction:column}
+.lab{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.lab button{border:0;background:none;color:var(--acc);font-size:12px;letter-spacing:.5px;text-transform:none;padding:4px 0 4px 10px;min-height:28px}
+#time{font-size:64px;font-weight:300;line-height:1;letter-spacing:1px;font-variant-numeric:tabular-nums}
+#time small{font-size:24px;color:var(--mut);margin-left:4px}
+#date{font-size:15px;color:var(--mut);margin-top:6px;text-transform:capitalize}
+#hello{font-size:14px;margin-top:4px;color:var(--acc)}
+.wnow{display:flex;align-items:center;gap:12px}
+.wnow svg{width:44px;height:44px;flex:none}
+#wtemp{font-size:38px;font-weight:400;line-height:1}
+#wdesc{font-size:13px;color:var(--mut);line-height:1.35}
+.hours{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:10px;text-align:center}
+.hours div{font-size:12px;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px}
+.hours b{font-size:14px;color:var(--fg);font-weight:500}
+.hours svg{width:20px;height:20px}
+.rain{font-size:11px;color:#7FB7FF}
+.sun{display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin-top:8px}
+ul{list-style:none;margin:0;padding:0;overflow:auto;flex:1;min-height:0}
+li{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:15px;line-height:1.3}
+li:first-child{border-top:0}
+li .chk{width:24px;height:24px;flex:none;border-radius:50%;border:1.5px solid var(--mut);background:none;padding:0}
+li.done span{color:var(--mut);text-decoration:line-through}
+li.done .chk{background:var(--acc);border-color:var(--acc)}
+li .del{margin-left:auto;border:0;background:none;color:var(--mut);font-size:18px;min-width:32px;min-height:32px}
+li .when{margin-left:auto;font-size:13px;color:var(--warn);font-variant-numeric:tabular-nums;white-space:nowrap}
+.empty{font-size:13px;color:var(--mut);padding:6px 0}
+.add{display:flex;gap:6px;margin-top:8px}
+.add input{flex:1;min-width:0;height:40px;border-radius:12px;border:1px solid var(--line);background:#000;padding:0 12px;font-size:15px;-webkit-user-select:text;user-select:text}
+.add button,.round{width:40px;height:40px;flex:none;border-radius:12px;border:0;background:var(--acc);display:flex;align-items:center;justify-content:center}
+.add button.ghost{background:transparent;border:1px solid var(--line)}
+.focus{display:flex;align-items:center;gap:14px}
+.ring{width:84px;height:84px;flex:none;position:relative}
+.ring svg{width:84px;height:84px;transform:rotate(-90deg)}
+.ring span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:19px;font-variant-numeric:tabular-nums}
+.fbtns{display:flex;flex-wrap:wrap;gap:6px}
+.chip{min-height:36px;padding:0 12px;border-radius:18px;border:1px solid var(--line);background:transparent;font-size:13px}
+.chip.on{background:var(--acc);color:#032A22;border-color:var(--acc);font-weight:700}
+#fstate{font-size:12px;color:var(--mut);margin-top:4px}
+.mk{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-top:1px solid var(--line);font-size:15px}
+.mk:first-of-type{border-top:0}
+.mk b{font-weight:500}
+.mk span{font-variant-numeric:tabular-nums}
+.mk i{font-style:normal;font-size:12px;margin-left:8px;font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.down{color:var(--down)}
+#mkt{font-size:11px;color:var(--mut);margin-top:4px}
+#cd{display:flex;align-items:baseline;gap:8px}
+#cdn{font-size:40px;font-weight:300;line-height:1}
+#cdl{font-size:13px;color:var(--mut)}
+#toast{position:fixed;left:50%;top:14px;transform:translate(-50%,-140%);background:var(--acc);color:#032A22;padding:12px 18px;border-radius:14px;font-weight:700;font-size:16px;transition:transform .35s;z-index:9;max-width:90%;text-align:center}
+#toast.on{transform:translate(-50%,0)}
+#ring{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;z-index:8;padding:24px;text-align:center}
+#ring.on{display:flex}
+#ringT{font-size:28px;font-weight:500;max-width:600px}
+.big{min-height:52px;padding:0 28px;border-radius:26px;border:0;background:var(--acc);color:#032A22;font-size:17px;font-weight:700}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:7;padding:12px}
+.sheet.on{display:flex}
+.panel{width:100%;max-width:520px;max-height:100%;overflow:auto;background:#101413;border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:10px;-webkit-user-select:text;user-select:text}
+.panel h2{margin:0;font-size:18px;font-weight:500}
+label{font-size:12px;color:var(--mut);display:flex;flex-direction:column;gap:5px}
+label input{height:44px;border-radius:12px;border:1px solid var(--line);background:#000;padding:0 12px;font-size:16px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#gear{position:fixed;right:calc(env(safe-area-inset-right) + 14px);bottom:calc(env(safe-area-inset-bottom) + 12px);width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#000;color:var(--mut);display:flex;align-items:center;justify-content:center;z-index:6;opacity:.6}
+#listen{display:none;font-size:13px;color:var(--acc);margin-top:6px}
+#listen.on{display:block}
+@media (orientation:portrait),(max-width:700px){
+  html,body{height:auto}
+  #wrap{grid-template-columns:1fr;height:auto}
+  #time{font-size:56px}
+}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div id="ring"><div id="ringT"></div><button class="big" id="ringStop">OK</button></div>
+<button id="gear" aria-label="Réglages"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
+
+<div id="wrap">
+  <div class="col">
+    <div class="card">
+      <div id="time">--:--</div>
+      <div id="date"></div>
+      <div id="hello"></div>
+    </div>
+    <div class="card grow">
+      <div class="lab"><span>Météo</span><span id="wcity"></span></div>
+      <div class="wnow"><span id="wicon"></span><div><div id="wtemp">--°</div><div id="wdesc">Choisis ta ville dans les réglages</div></div></div>
+      <div class="hours" id="hours"></div>
+      <div class="sun"><span id="sunrise"></span><span id="sunset"></span></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card grow">
+      <div class="lab"><span>À faire</span><button id="clearDone">Vider les faits</button></div>
+      <ul id="todos"></ul>
+      <form class="add" id="todoForm">
+        <input id="todoIn" placeholder="Ajouter une tâche ou « rappel 15h appeler Paul »" autocomplete="off" aria-label="Nouvelle tâche">
+        <button type="button" class="ghost" id="mic" aria-label="Dicter"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EEF6F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></button>
+        <button type="submit" aria-label="Ajouter"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#032A22" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+      </form>
+      <div id="listen">J'écoute… dis par exemple « rappelle-moi à 15h d'appeler Paul » ou « acheter du pain ».</div>
+    </div>
+    <div class="card">
+      <div class="lab"><span>Rappels</span></div>
+      <ul id="rems" style="max-height:120px"></ul>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <div class="lab"><span>Concentration</span></div>
+      <div class="focus">
+        <div class="ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="7"/><circle id="arc" cx="42" cy="42" r="36" fill="none" stroke="#4FF0D2" stroke-width="7" stroke-linecap="round" stroke-dasharray="226.2" stroke-dashoffset="226.2"/></svg><span id="ftime">25:00</span></div>
+        <div>
+          <div class="fbtns"><button class="chip" data-f="25">25 min</button><button class="chip" data-f="50">50 min</button><button class="chip" data-f="5">Pause 5</button><button class="chip" id="fstop">Stop</button></div>
+          <div id="fstate">Lance une session de travail.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card grow">
+      <div class="lab"><span>Marchés</span><span id="mkt"></span></div>
+      <div id="markets"><div class="empty">Chargement…</div></div>
+    </div>
+    <div class="card">
+      <div class="lab"><span>Objectif</span></div>
+      <div id="cd"><span id="cdn">–</span><span id="cdl">Règle ton objectif dans les réglages</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="cfg"><div class="panel">
+  <h2>Réglages</h2>
+  <div class="row2">
+    <label>Ton prénom<input id="cName" autocomplete="off"></label>
+    <label>Ville météo<input id="cCity" autocomplete="off"></label>
+  </div>
+  <div class="row2">
+    <label>Objectif<input id="cGoal" autocomplete="off" placeholder="Marvejols-Mende"></label>
+    <label>Date de l'objectif<input id="cGoalDate" type="date"></label>
+  </div>
+  <label>Cryptos suivies (identifiants CoinGecko, séparés par des virgules)<input id="cCoins" autocomplete="off" placeholder="bitcoin,ethereum,solana"></label>
+  <div class="row2">
+    <label>Écran tamisé à partir de<input id="cDim" type="time"></label>
+    <label>jusqu'à<input id="cDimEnd" type="time"></label>
+  </div>
+  <button class="big" id="cSave">Enregistrer</button>
+  <button class="chip" data-close style="min-height:44px">Fermer</button>
+</div></div>
+
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, '0');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+let S = { name: '', city: '', lat: null, lon: null, goal: 'Marvejols-Mende', goalDate: '', coins: 'bitcoin,ethereum,solana', dim: '23:00', dimEnd: '07:00', todos: [], rems: [] };
+try { Object.assign(S, JSON.parse(localStorage.getItem('bureau') || '{}')); } catch (e) {}
+const save = () => { try { localStorage.setItem('bureau', JSON.stringify(S)); } catch (e) {} };
+
+/* ---------- son, voix, alertes ---------- */
+let actx = null;
+function unlock() {
+  if (actx) return;
+  try { actx = new (window.AudioContext || window.webkitAudioContext)(); actx.resume(); } catch (e) {}
+  try { speechSynthesis.speak(new SpeechSynthesisUtterance(' ')); } catch (e) {}
+  try { if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(() => {}); } catch (e) {}
+}
+addEventListener('pointerdown', unlock);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { try { if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(() => {}); } catch (e) {} refreshAll(); } });
+function chime() {
+  if (!actx) return;
+  [880, 1175, 1568].forEach((f, i) => { const t = actx.currentTime + i * .18, o = actx.createOscillator(), g = actx.createGain();
+    o.frequency.value = f; g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.25, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + .5);
+    o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + .55); });
+}
+function say(t) { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'fr-FR'; const v = speechSynthesis.getVoices().filter(v => /^fr/i.test(v.lang)).sort((a, b) => /premium|enhanced/i.test(b.voiceURI) - /premium|enhanced/i.test(a.voiceURI))[0]; if (v) u.voice = v; speechSynthesis.speak(u); } catch (e) {} }
+let toastT = null;
+function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 3200); }
+let ringIv = null;
+function alarm(t) { document.body.classList.remove('dim'); $('ringT').textContent = t; $('ring').classList.add('on'); chime(); say(t); clearInterval(ringIv); ringIv = setInterval(chime, 4000); }
+$('ringStop').onclick = () => { clearInterval(ringIv); $('ring').classList.remove('on'); try { speechSynthesis.cancel(); } catch (e) {} };
+
+/* ---------- horloge ---------- */
+const JOURS = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+function inRange(now, a, b) { if (!a || !b) return false; const m = now.getHours() * 60 + now.getMinutes(), [ah, am] = a.split(':').map(Number), [bh, bm] = b.split(':').map(Number), x = ah * 60 + am, y = bh * 60 + bm; return x <= y ? m >= x && m < y : m >= x || m < y; }
+let shift = 0;
+function tick() {
+  const n = new Date();
+  $('time').innerHTML = pad(n.getHours()) + ':' + pad(n.getMinutes()) + '<small>' + pad(n.getSeconds()) + '</small>';
+  $('date').textContent = JOURS.format(n);
+  const h = n.getHours();
+  $('hello').textContent = (h < 5 ? 'Bonne nuit' : h < 12 ? 'Bonjour' : h < 18 ? 'Bon après-midi' : 'Bonsoir') + (S.name ? ' ' + S.name : '');
+  document.body.classList.toggle('dim', inRange(n, S.dim, S.dimEnd) && !$('ring').classList.contains('on'));
+  if (n.getSeconds() === 0) { shift = (shift + 1) % 4; $('wrap').style.transform = 'translate(' + [0, 1, 1, 0][shift] + 'px,' + [0, 0, 1, 1][shift] + 'px)'; checkRems(n); countdown(); }
+  focusTick();
+}
+setInterval(tick, 1000);
+
+/* ---------- météo ---------- */
+const W = c => c === 0 ? ['Ciel dégagé', 'sun'] : c <= 2 ? ['Éclaircies', 'part'] : c === 3 ? ['Couvert', 'cloud'] : c <= 48 ? ['Brouillard', 'fog'] : c <= 57 ? ['Bruine', 'rain'] : c <= 67 ? ['Pluie', 'rain'] : c <= 77 ? ['Neige', 'snow'] : c <= 82 ? ['Averses', 'rain'] : c <= 86 ? ['Averses de neige', 'snow'] : ['Orage', 'storm'];
+function icon(k, night) {
+  const sun = night ? '<path d="M15 4a8 8 0 1 0 7 11 6.5 6.5 0 0 1-7-11z" fill="#C9D6FF"/>' : '<circle cx="12" cy="12" r="5" fill="#FFD166"/><g stroke="#FFD166" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></g>';
+  const cloud = (y, c) => '<path d="M7 ' + (18 + y) + 'h10a4 4 0 0 0 0-8 6 6 0 0 0-11.5 1.5A3.3 3.3 0 0 0 7 ' + (18 + y) + 'z" fill="' + c + '"/>';
+  const m = { sun: sun, part: '<g transform="translate(-3,-4) scale(.8)">' + sun + '</g>' + cloud(2, '#D7E0E5'), cloud: cloud(0, '#B8C4CA'), fog: cloud(-3, '#9AA6AC') + '<path d="M4 21h16" stroke="#9AA6AC" stroke-width="2" stroke-linecap="round"/>',
+    rain: cloud(-3, '#A9B6BD') + '<path d="M8 19l-1 3M12 19l-1 3M16 19l-1 3" stroke="#7FB7FF" stroke-width="2" stroke-linecap="round"/>', snow: cloud(-3, '#C9D3D8') + '<g fill="#fff"><circle cx="8" cy="21" r="1.2"/><circle cx="12" cy="22" r="1.2"/><circle cx="16" cy="21" r="1.2"/></g>',
+    storm: cloud(-3, '#8C979D') + '<path d="M12 17l-2 4h3l-2 3" stroke="#FFD166" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' };
+  return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (m[k] || m.cloud) + '</svg>';
+}
+async function weather() {
+  if (!S.city) return;
+  try {
+    if (S.lat == null) {
+      const g = await (await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&language=fr&name=' + encodeURIComponent(S.city))).json();
+      if (!g.results || !g.results.length) { $('wdesc').textContent = 'Ville introuvable : ' + S.city; return; }
+      S.lat = g.results[0].latitude; S.lon = g.results[0].longitude; save();
+    }
+    const w = await (await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + S.lat + '&longitude=' + S.lon + '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,is_day&hourly=temperature_2m,precipitation_probability,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max&timezone=auto&forecast_days=2')).json();
+    const c = w.current, d = w.daily, [txt, k] = W(c.weather_code);
+    $('wcity').textContent = S.city;
+    $('wicon').innerHTML = icon(k, !c.is_day);
+    $('wtemp').textContent = Math.round(c.temperature_2m) + '°';
+    $('wdesc').innerHTML = esc(txt) + ' · ressenti ' + Math.round(c.apparent_temperature) + '°<br>' + Math.round(d.temperature_2m_min[0]) + '° / ' + Math.round(d.temperature_2m_max[0]) + '° · vent ' + Math.round(c.wind_speed_10m) + ' km/h · pluie ' + d.precipitation_probability_max[0] + ' %';
+    const now = Date.now(); let i = w.hourly.time.findIndex(t => new Date(t).getTime() > now); if (i < 0) i = 0;
+    let html = '';
+    for (let j = i; j < i + 6 && j < w.hourly.time.length; j++) {
+      const p = w.hourly.precipitation_probability[j];
+      html += '<div>' + new Date(w.hourly.time[j]).getHours() + 'h' + icon(W(w.hourly.weather_code[j])[1], !w.hourly.is_day[j]) + '<b>' + Math.round(w.hourly.temperature_2m[j]) + '°</b><span class="rain">' + (p >= 20 ? p + ' %' : '&nbsp;') + '</span></div>';
+    }
+    $('hours').innerHTML = html;
+    const hm = s => s.slice(11, 16);
+    $('sunrise').textContent = 'Lever ' + hm(d.sunrise[0]); $('sunset').textContent = 'Coucher ' + hm(d.sunset[0]);
+  } catch (e) { $('wdesc').textContent = 'Météo indisponible pour le moment'; }
+}
+
+/* ---------- tâches et rappels ---------- */
+function renderTodos() {
+  const ul = $('todos');
+  ul.innerHTML = S.todos.length ? '' : '<li class="empty">Rien à faire. Profites-en.</li>';
+  S.todos.forEach((t, i) => {
+    const li = document.createElement('li'); if (t.done) li.className = 'done';
+    li.innerHTML = '<button class="chk" aria-label="Fait"></button><span></span><button class="del" aria-label="Supprimer">×</button>';
+    li.querySelector('span').textContent = t.text;
+    li.querySelector('.chk').onclick = () => { t.done = !t.done; save(); renderTodos(); if (t.done) chime(); };
+    li.querySelector('.del').onclick = () => { S.todos.splice(i, 1); save(); renderTodos(); };
+    ul.appendChild(li);
+  });
+}
+function renderRems() {
+  const ul = $('rems'); S.rems.sort((a, b) => a.at - b.at);
+  ul.innerHTML = S.rems.length ? '' : '<li class="empty">Aucun rappel. Écris « rappel 15h … » ou « dans 20 min … ».</li>';
+  S.rems.forEach((r, i) => {
+    const d = new Date(r.at), today = new Date().toDateString() === d.toDateString();
+    const li = document.createElement('li');
+    li.innerHTML = '<span></span><span class="when"></span><button class="del" aria-label="Supprimer">×</button>';
+    li.querySelector('span').textContent = r.text;
+    li.querySelector('.when').textContent = (today ? '' : 'demain ') + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    li.querySelector('.del').onclick = () => { S.rems.splice(i, 1); save(); renderRems(); };
+    ul.appendChild(li);
+  });
+}
+function checkRems(now) {
+  const due = S.rems.filter(r => r.at <= now.getTime() + 500);
+  if (!due.length) return;
+  S.rems = S.rems.filter(r => r.at > now.getTime() + 500); save(); renderRems();
+  alarm('Rappel : ' + due.map(r => r.text).join(', '));
+}
+function parse(text) {
+  let t = text.trim(), s = t.toLowerCase(), m, at = null;
+  if ((m = s.match(/dans\s+(\d+)\s*(minutes?|min|heures?|h)\b/))) { at = Date.now() + (+m[1]) * (m[2][0] === 'h' ? 3600000 : 60000); t = t.replace(new RegExp(m[0], 'i'), ''); }
+  else if ((m = s.match(/(?:à|a|vers)?\s*(\d{1,2})\s*(?:h|:|heures?)\s*(\d{2})?/)) && /rappel|rappelle|alarme|réveil|^\d|à \d/.test(s)) {
+    const hh = +m[1], mm = +(m[2] || 0);
+    if (hh < 24 && mm < 60) { const d = new Date(); d.setHours(hh, mm, 0, 0); if (d.getTime() <= Date.now()) d.setDate(d.getDate() + 1); at = d.getTime(); t = t.replace(new RegExp(m[0].trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), ''); }
+  }
+  t = t.replace(/^(rappelle[- ]moi|rappel|alarme)\s*/i, '').replace(/^(de|d'|à|a)\s+/i, '').replace(/\s+/g, ' ').trim();
+  if (!t) t = 'C\'est l\'heure';
+  return { text: t.charAt(0).toUpperCase() + t.slice(1), at };
+}
+function addItem(raw) {
+  if (!raw || !raw.trim()) return;
+  const p = parse(raw);
+  if (p.at) { S.rems.push({ text: p.text, at: p.at }); save(); renderRems(); const d = new Date(p.at); toast('Rappel à ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ' : ' + p.text); }
+  else { S.todos.unshift({ text: p.text, done: false }); save(); renderTodos(); toast('Ajouté : ' + p.text); }
+}
+$('todoForm').onsubmit = e => { e.preventDefault(); addItem($('todoIn').value); $('todoIn').value = ''; $('todoIn').blur(); };
+$('clearDone').onclick = () => { S.todos = S.todos.filter(t => !t.done); save(); renderTodos(); };
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition; let rec = null;
+$('mic').onclick = () => {
+  if (!SR) { toast('Dictée non disponible ici'); return; }
+  if (rec) { rec.stop(); return; }
+  rec = new SR(); rec.lang = 'fr-FR'; rec.interimResults = true; let fin = '';
+  rec.onresult = e => { let t = ''; for (const r of e.results) t += r[0].transcript; $('todoIn').value = t; if (e.results[e.results.length - 1].isFinal) fin = t; };
+  rec.onerror = e => { if (/not-allowed/.test(e.error)) toast('Autorise le micro pour Safari'); };
+  rec.onend = () => { $('listen').classList.remove('on'); rec = null; if (fin) { addItem(fin); $('todoIn').value = ''; } };
+  try { rec.start(); $('listen').classList.add('on'); } catch (e) { rec = null; }
+};
+
+/* ---------- concentration ---------- */
+let F = { end: 0, total: 0, kind: '' };
+function focusTick() {
+  if (!F.end) return;
+  const left = Math.max(0, F.end - Date.now());
+  $('ftime').textContent = pad(Math.floor(left / 60000)) + ':' + pad(Math.floor(left / 1000) % 60);
+  $('arc').style.strokeDashoffset = (226.2 * (left / F.total)).toFixed(1);
+  if (!left) { const was = F.kind; stopFocus(); alarm(was === 'pause' ? 'Fin de la pause. On s\'y remet !' : 'Session terminée. Prends 5 minutes de pause.'); }
+}
+function startFocus(min) {
+  F = { end: Date.now() + min * 60000, total: min * 60000, kind: min <= 10 ? 'pause' : 'travail' };
+  document.querySelectorAll('[data-f]').forEach(b => b.classList.toggle('on', +b.dataset.f === min));
+  $('fstate').textContent = F.kind === 'pause' ? 'Pause en cours.' : 'Session de travail en cours. Fin à ' + new Date(F.end).toTimeString().slice(0, 5) + '.';
+  focusTick();
+}
+function stopFocus() { F = { end: 0, total: 0, kind: '' }; $('ftime').textContent = '25:00'; $('arc').style.strokeDashoffset = 226.2; $('fstate').textContent = 'Lance une session de travail.'; document.querySelectorAll('[data-f]').forEach(b => b.classList.remove('on')); }
+document.querySelectorAll('[data-f]').forEach(b => b.onclick = () => startFocus(+b.dataset.f));
+$('fstop').onclick = stopFocus;
+
+/* ---------- marchés ---------- */
+const NAMES = { bitcoin: 'Bitcoin', ethereum: 'Ethereum', solana: 'Solana', ripple: 'XRP', cardano: 'Cardano', dogecoin: 'Dogecoin', binancecoin: 'BNB' };
+const eur = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 });
+const eur0 = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+async function markets() {
+  const ids = S.coins.split(',').map(s => s.trim().toLowerCase()).filter(Boolean).slice(0, 6);
+  let html = '', ok = false;
+  try {
+    const r = await (await fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + ids.join(',') + '&vs_currencies=eur&include_24hr_change=true')).json();
+    ids.forEach(id => { const v = r[id]; if (!v) return; ok = true; const ch = v.eur_24h_change || 0;
+      html += '<div class="mk"><b>' + esc(NAMES[id] || id) + '</b><span>' + (v.eur >= 1000 ? eur0 : eur).format(v.eur) + '<i class="' + (ch >= 0 ? 'up' : 'down') + '">' + (ch >= 0 ? '+' : '') + ch.toFixed(1) + ' %</i></span></div>'; });
+  } catch (e) {}
+  try {
+    const fx = await (await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD,GBP,CHF')).json();
+    if (fx && fx.rates) { ok = true; html += '<div class="mk"><b>EUR / USD</b><span>' + fx.rates.USD.toFixed(4) + '</span></div><div class="mk"><b>EUR / CHF</b><span>' + fx.rates.CHF.toFixed(4) + '</span></div>'; }
+  } catch (e) {}
+  $('markets').innerHTML = ok ? html : '<div class="empty">Marchés indisponibles pour le moment</div>';
+  const n = new Date(); $('mkt').textContent = ok ? 'maj ' + pad(n.getHours()) + ':' + pad(n.getMinutes()) : '';
+}
+
+/* ---------- objectif ---------- */
+function countdown() {
+  if (!S.goalDate) { $('cdn').textContent = '–'; $('cdl').textContent = 'Règle ton objectif dans les réglages'; return; }
+  const t = new Date(S.goalDate + 'T00:00'), n = new Date(); n.setHours(0, 0, 0, 0);
+  const days = Math.round((t - n) / 86400000);
+  $('cdn').textContent = days > 0 ? 'J-' + days : days === 0 ? 'Jour J' : 'Fait';
+  $('cdl').textContent = (S.goal || 'Objectif') + (days > 0 ? ' · ' + Math.floor(days / 7) + ' semaines' : '');
+}
+
+/* ---------- réglages ---------- */
+$('gear').onclick = () => { $('cName').value = S.name; $('cCity').value = S.city; $('cGoal').value = S.goal; $('cGoalDate').value = S.goalDate; $('cCoins').value = S.coins; $('cDim').value = S.dim; $('cDimEnd').value = S.dimEnd; $('cfg').classList.add('on'); };
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('.sheet').classList.remove('on'));
+$('cSave').onclick = () => {
+  const city = $('cCity').value.trim(); if (city !== S.city) { S.lat = S.lon = null; }
+  Object.assign(S, { name: $('cName').value.trim(), city, goal: $('cGoal').value.trim(), goalDate: $('cGoalDate').value, coins: $('cCoins').value.trim() || 'bitcoin,ethereum,solana', dim: $('cDim').value, dimEnd: $('cDimEnd').value });
+  save(); $('cfg').classList.remove('on'); refreshAll(); toast('Enregistré');
+};
+
+function refreshAll() { weather(); markets(); countdown(); }
+renderTodos(); renderRems(); tick(); refreshAll();
+if (!S.city) setTimeout(() => $('gear').click(), 600);
+setInterval(weather, 15 * 60000);
+setInterval(markets, 3 * 60000);
+</script>
+</body>
+</html>
