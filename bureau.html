@@ -24,7 +24,7 @@ button{cursor:pointer}
 .grow{flex:1;display:flex;flex-direction:column}
 .lab{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .lab button{border:0;background:none;color:var(--acc);font-size:12px;letter-spacing:.5px;text-transform:none;padding:4px 0 4px 10px;min-height:28px}
-#time{font-size:64px;font-weight:300;line-height:1;letter-spacing:1px;font-variant-numeric:tabular-nums}
+#time{font-size:58px;font-weight:300;line-height:1;letter-spacing:1px;font-variant-numeric:tabular-nums}
 #time small{font-size:24px;color:var(--mut);margin-left:4px}
 #date{font-size:15px;color:var(--mut);margin-top:6px;text-transform:capitalize}
 #hello{font-size:14px;margin-top:4px;color:var(--acc)}
@@ -52,23 +52,23 @@ li .when{margin-left:auto;font-size:13px;color:var(--warn);font-variant-numeric:
 .add button,.round{width:40px;height:40px;flex:none;border-radius:12px;border:0;background:var(--acc);display:flex;align-items:center;justify-content:center}
 .add button.ghost{background:transparent;border:1px solid var(--line)}
 .focus{display:flex;align-items:center;gap:14px}
-.ring{width:84px;height:84px;flex:none;position:relative}
-.ring svg{width:84px;height:84px;transform:rotate(-90deg)}
-.ring span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:19px;font-variant-numeric:tabular-nums}
-.fbtns{display:flex;flex-wrap:wrap;gap:6px}
-.chip{min-height:36px;padding:0 12px;border-radius:18px;border:1px solid var(--line);background:transparent;font-size:13px}
+.ring{width:66px;height:66px;flex:none;position:relative}
+.ring svg{width:66px;height:66px;transform:rotate(-90deg)}
+.ring span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-variant-numeric:tabular-nums}
+.fbtns{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex:1}
+.chip{min-height:32px;padding:0 8px;border-radius:18px;border:1px solid var(--line);background:transparent;font-size:13px}
 .chip.on{background:var(--acc);color:#032A22;border-color:var(--acc);font-weight:700}
-#fstate{font-size:12px;color:var(--mut);margin-top:4px}
-.mk{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-top:1px solid var(--line);font-size:15px}
+#fstate{font-size:11px;color:var(--mut);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mk{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-top:1px solid var(--line);font-size:15px}
 .mk:first-of-type{border-top:0}
 .mk b{font-weight:500}
 .mk span{font-variant-numeric:tabular-nums}
 .mk i{font-style:normal;font-size:12px;margin-left:8px;font-variant-numeric:tabular-nums}
 .up{color:var(--up)}.down{color:var(--down)}
 #mkt{font-size:11px;color:var(--mut);margin-top:4px}
-#cd{display:flex;align-items:baseline;gap:8px}
-#cdn{font-size:40px;font-weight:300;line-height:1}
-#cdl{font-size:13px;color:var(--mut)}
+#cd{display:flex;align-items:baseline;gap:10px;white-space:nowrap;overflow:hidden}
+#cdn{font-size:30px;font-weight:300;line-height:1}
+#cdl{font-size:12px;color:var(--mut);overflow:hidden;text-overflow:ellipsis}
 #toast{position:fixed;left:50%;top:14px;transform:translate(-50%,-140%);background:var(--acc);color:#032A22;padding:12px 18px;border-radius:14px;font-weight:700;font-size:16px;transition:transform .35s;z-index:9;max-width:90%;text-align:center}
 #toast.on{transform:translate(-50%,0)}
 #ring{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;z-index:8;padding:24px;text-align:center}
@@ -95,7 +95,7 @@ label input{height:44px;border-radius:12px;border:1px solid var(--line);backgrou
 <body>
 <div id="toast"></div>
 <div id="ring"><div id="ringT"></div><button class="big" id="ringStop">OK</button></div>
-<button id="gear" aria-label="Réglages"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
+<button id="gear" aria-label="Réglages" style="display:none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
 
 <div id="wrap">
   <div class="col">
@@ -103,6 +103,7 @@ label input{height:44px;border-radius:12px;border:1px solid var(--line);backgrou
       <div id="time">--:--</div>
       <div id="date"></div>
       <div id="hello"></div>
+      <button id="gear2" aria-label="Réglages" style="position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--mut);display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
     </div>
     <div class="card grow">
       <div class="lab"><span>Météo</span><span id="wcity"></span></div>
@@ -134,15 +135,13 @@ label input{height:44px;border-radius:12px;border:1px solid var(--line);backgrou
       <div class="lab"><span>Concentration</span></div>
       <div class="focus">
         <div class="ring"><svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="7"/><circle id="arc" cx="42" cy="42" r="36" fill="none" stroke="#4FF0D2" stroke-width="7" stroke-linecap="round" stroke-dasharray="226.2" stroke-dashoffset="226.2"/></svg><span id="ftime">25:00</span></div>
-        <div>
-          <div class="fbtns"><button class="chip" data-f="25">25 min</button><button class="chip" data-f="50">50 min</button><button class="chip" data-f="5">Pause 5</button><button class="chip" id="fstop">Stop</button></div>
-          <div id="fstate">Lance une session de travail.</div>
-        </div>
+        <div class="fbtns"><button class="chip" data-f="25">25 min</button><button class="chip" data-f="50">50 min</button><button class="chip" data-f="5">Pause 5</button><button class="chip" id="fstop">Stop</button></div>
       </div>
+      <div id="fstate">Lance une session de travail.</div>
     </div>
     <div class="card grow">
       <div class="lab"><span>Marchés</span><span id="mkt"></span></div>
-      <div id="markets"><div class="empty">Chargement…</div></div>
+      <div id="markets" style="overflow:auto;min-height:0;flex:1"><div class="empty">Chargement…</div></div>
     </div>
     <div class="card">
       <div class="lab"><span>Objectif</span></div>
@@ -348,7 +347,7 @@ async function markets() {
       html += '<div class="mk"><b>' + esc(NAMES[id] || id) + '</b><span>' + (v.eur >= 1000 ? eur0 : eur).format(v.eur) + '<i class="' + (ch >= 0 ? 'up' : 'down') + '">' + (ch >= 0 ? '+' : '') + ch.toFixed(1) + ' %</i></span></div>'; });
   } catch (e) {}
   try {
-    const fx = await (await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD,GBP,CHF')).json();
+    const fx = await (await fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD,CHF')).json();
     if (fx && fx.rates) { ok = true; html += '<div class="mk"><b>EUR / USD</b><span>' + fx.rates.USD.toFixed(4) + '</span></div><div class="mk"><b>EUR / CHF</b><span>' + fx.rates.CHF.toFixed(4) + '</span></div>'; }
   } catch (e) {}
   $('markets').innerHTML = ok ? html : '<div class="empty">Marchés indisponibles pour le moment</div>';
@@ -365,6 +364,7 @@ function countdown() {
 }
 
 /* ---------- réglages ---------- */
+$('gear2').onclick = () => $('gear').onclick();
 $('gear').onclick = () => { $('cName').value = S.name; $('cCity').value = S.city; $('cGoal').value = S.goal; $('cGoalDate').value = S.goalDate; $('cCoins').value = S.coins; $('cDim').value = S.dim; $('cDimEnd').value = S.dimEnd; $('cfg').classList.add('on'); };
 document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('.sheet').classList.remove('on'));
 $('cSave').onclick = () => {
