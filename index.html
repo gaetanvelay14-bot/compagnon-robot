@@ -2,103 +2,174 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Compagnon</title>
+<title>Néo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Compagnon">
-<meta name="theme-color" content="#0E0F0F">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap">
+<meta name="apple-mobile-web-app-title" content="Néo">
+<meta name="theme-color" content="#000000">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap">
 <style>
-:root{--bg:#000;--fg:#EAF7F3;--mut:#7E8C87;--line:rgba(255,255,255,.14);--card:rgba(22,26,25,.92);--eye:#4FF0D2;--glow:rgba(79,240,210,.55);--ink:#032A22}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:'Space Grotesk',system-ui,sans-serif;overscroll-behavior:none;overflow:hidden;-webkit-user-select:none;user-select:none}
-body{display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top) + 14px) calc(env(safe-area-inset-right) + 20px) calc(env(safe-area-inset-bottom) + 14px) calc(env(safe-area-inset-left) + 20px);transition:background 1s}
+:root{--bg:#000;--fg:#EAF7F3;--mut:#7E8C87;--line:rgba(255,255,255,.14);--card:rgba(20,24,23,.94);--eye:#4FF0D2;--ink:#032A22}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:'Space Grotesk',system-ui,sans-serif;overscroll-behavior:none;overflow:hidden;-webkit-user-select:none;user-select:none;touch-action:none}
+body{display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top) + 12px) calc(env(safe-area-inset-right) + 18px) calc(env(safe-area-inset-bottom) + 12px) calc(env(safe-area-inset-left) + 18px)}
+body[data-mood=angry]{--eye:#FF5A5A}
+body[data-mood=sad]{--eye:#6FA8FF}
+body[data-mood=love]{--eye:#FF5FA2}
+body[data-mood=wow]{--eye:#FFE066}
+body.go{--eye:#5CFF7A}
 button,input,select{font-family:inherit;color:inherit}
 button{cursor:pointer}
-.top{width:100%;display:flex;justify-content:space-between;align-items:center;min-height:44px;transition:opacity .5s}
-#status{font-size:13px;letter-spacing:.4px;color:var(--mut);max-width:75%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top{width:100%;display:flex;justify-content:space-between;align-items:center;min-height:44px;transition:opacity .5s;position:relative;z-index:2}
+#status{font-size:13px;letter-spacing:.4px;color:var(--mut);max-width:72%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .icon{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;color:var(--mut)}
-.stage{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;min-height:0}
-#face{display:flex;gap:52px;align-items:center;justify-content:center;height:220px;transition:transform 1.1s cubic-bezier(.4,1.4,.5,1)}
-.eye{width:96px;height:150px;border-radius:40px;background:var(--eye);box-shadow:0 0 24px var(--glow),0 0 70px rgba(79,240,210,.22);border:0 solid transparent;transition:height .35s cubic-bezier(.4,1.6,.5,1),width .35s,border-radius .35s,background .35s,border-color .35s,transform .35s,opacity .8s;animation:blink 6s infinite}
-.eye:nth-child(2){animation-delay:.04s}
-@keyframes blink{0%,93%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.06)}}
-body.listen .eye{height:172px;width:104px;animation:none}
-body.think .eye{height:118px;animation:none}
-body.think #face{transform:translate(26px,-30px)!important}
-body.talk .eye{animation:talk .42s infinite alternate ease-in-out}
-@keyframes talk{from{transform:scaleY(1)}to{transform:scaleY(.8)}}
-body.happy .eye{width:104px;height:104px;border-radius:50%;background:transparent;border:18px solid var(--eye);border-bottom-color:transparent;border-left-color:transparent;border-right-color:transparent;transform:translateY(34px);animation:none;box-shadow:none;filter:drop-shadow(0 0 14px var(--glow))}
-#bubble{min-height:84px;max-width:540px;width:100%;display:flex;align-items:center;justify-content:center;text-align:center}
-#say{font-size:21px;line-height:1.4;font-weight:500;color:var(--fg);opacity:0;transform:translateY(8px);transition:opacity .45s,transform .45s;max-height:30vh;overflow:auto}
+.stage{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;min-height:0;position:relative}
+#face{display:flex;gap:46px;align-items:center;justify-content:center;height:230px;will-change:transform;filter:drop-shadow(0 0 18px var(--eye)) drop-shadow(0 0 46px color-mix(in srgb,var(--eye) 35%,transparent))}
+#face.bounce{animation:bounce .22s ease-out}
+@keyframes bounce{0%{scale:1}40%{scale:1.08 .92}100%{scale:1}}
+.eye{position:relative;width:100px;height:150px;border-radius:44px;background:var(--eye);overflow:hidden;transition:width .25s cubic-bezier(.4,1.6,.5,1),height .25s cubic-bezier(.4,1.6,.5,1),background .4s,border-radius .25s}
+.lid{position:absolute;left:-30%;width:160%;height:100%;background:var(--bg);transition:transform .16s ease-out}
+.lt{top:-100%;transform-origin:50% 100%;transform:translateY(var(--t,0%)) rotate(var(--r,0deg))}
+.lb{bottom:-100%;border-radius:50% 50% 0 0/38% 38% 0 0;transform:translateY(var(--b,0%))}
+.fx{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .2s}
+body.blink .lt{--t:100%!important;transition-duration:.07s}
+body.wink .L .lt{--t:100%!important}
+body[data-mood=happy] .lb,body[data-mood=love] .lb{--b:-42%}
+body[data-mood=happy] .eye{height:132px}
+body[data-mood=angry] .L .lt{--t:34%;--r:22deg}
+body[data-mood=angry] .R .lt{--t:34%;--r:-22deg}
+body[data-mood=angry] .eye{height:126px}
+body[data-mood=sad] .L .lt{--t:30%;--r:-18deg}
+body[data-mood=sad] .R .lt{--t:30%;--r:18deg}
+body[data-mood=sad] .eye{height:132px}
+body[data-mood=sus] .L .lt{--t:52%}
+body[data-mood=sus] .R .lt{--t:22%}
+body[data-mood=sleepy] .lt{--t:56%}
+body[data-mood=sleep] .lt{--t:93%}
+body[data-mood=sleep] #face{filter:drop-shadow(0 0 8px var(--eye))}
+body[data-mood=wow] .eye{width:116px;height:170px;border-radius:58px}
+body[data-mood=love] .eye,body[data-mood=dizzy] .eye{background:transparent}
+body[data-mood=love] .lid,body[data-mood=dizzy] .lid{opacity:0}
+body[data-mood=love] .heart{opacity:1;animation:beat .6s infinite}
+body[data-mood=dizzy] .spiral{opacity:1;animation:spin 1s linear infinite}
+body[data-mood=dizzy] .R .spiral{animation-direction:reverse}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.15)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+body.talk #face{animation:talk .3s infinite alternate ease-in-out}
+@keyframes talk{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+body.listen .eye{height:168px}
+#bubble{min-height:76px;max-width:520px;width:100%;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;z-index:2}
+#say{font-size:21px;line-height:1.4;font-weight:500;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;max-height:28vh;overflow:auto}
 #say.on{opacity:1;transform:none}
-.meta{display:flex;flex-direction:column;align-items:center;gap:4px;transition:opacity .5s}
-#clock{font-size:46px;font-weight:300;letter-spacing:2px;line-height:1;color:var(--fg);font-variant-numeric:tabular-nums}
-#sub{font-size:13px;color:var(--mut);min-height:18px;letter-spacing:.3px}
-.dock{width:100%;max-width:560px;display:flex;flex-direction:column;gap:10px;transition:opacity .45s,transform .45s}
+.meta{display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;z-index:2}
+#clock{font-size:42px;font-weight:300;letter-spacing:2px;line-height:1;font-variant-numeric:tabular-nums}
+#sub{font-size:13px;color:var(--mut);min-height:18px}
+.part{position:absolute;left:50%;top:40%;pointer-events:none;font-weight:700;color:var(--eye);animation:float 2.4s ease-out forwards;text-shadow:0 0 12px var(--eye)}
+@keyframes float{from{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}to{opacity:0;transform:translate(var(--dx),-180px) scale(1.3)}}
+.dock{width:100%;max-width:560px;display:flex;flex-direction:column;gap:10px;transition:opacity .4s,transform .4s;position:relative;z-index:2}
 body.idle .dock{opacity:0;transform:translateY(16px);pointer-events:none}
-body.idle .top{opacity:.35}
-.row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.btn{height:50px;border:1px solid var(--line);border-radius:25px;background:rgba(255,255,255,.04);font-size:15px;font-weight:500;letter-spacing:.2px}
-.btn:active{background:rgba(255,255,255,.1)}
-.btn.main{border:0;background:var(--eye);color:var(--ink);font-weight:700;box-shadow:0 0 22px var(--glow)}
+body.idle .top{opacity:.3}
+.row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.btn{min-height:50px;border:1px solid var(--line);border-radius:25px;background:rgba(255,255,255,.05);font-size:15px;font-weight:500;padding:0 8px}
+.btn:active{background:rgba(255,255,255,.12)}
+.btn.main{border:0;background:var(--eye);color:var(--ink);font-weight:700}
 .talkbar{display:flex;gap:10px;align-items:center}
 .talkbar input{flex:1;min-width:0;height:54px;border-radius:27px;border:1px solid var(--line);background:rgba(255,255,255,.05);padding:0 20px;font-size:16px;-webkit-user-select:text;user-select:text}
 .talkbar input::placeholder{color:var(--mut)}
-#mic{width:58px;height:58px;flex:none;border-radius:50%;border:0;background:var(--eye);display:flex;align-items:center;justify-content:center;box-shadow:0 0 22px var(--glow);transition:background .3s,box-shadow .3s}
-body.listen #mic{background:#FF6B6B;box-shadow:0 0 26px rgba(255,107,107,.6)}
-#stop{display:none;width:100%;max-width:560px;margin-bottom:10px}
+#mic{width:56px;height:56px;flex:none;border-radius:50%;border:0;background:var(--eye);display:flex;align-items:center;justify-content:center}
+body.listen #mic{background:#FF6B6B}
+#stop{display:none;width:100%;max-width:560px;margin-bottom:10px;position:relative;z-index:2}
 body.ring #stop{display:block}
-.sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;z-index:5}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;z-index:5}
 .sheet.on{display:flex}
-.panel{width:100%;max-width:560px;max-height:90%;overflow:auto;background:var(--card);border:1px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;padding:22px 22px calc(env(safe-area-inset-bottom) + 22px);display:flex;flex-direction:column;gap:14px;-webkit-user-select:text;user-select:text}
-.panel h2{margin:0 0 4px;font-size:20px;font-weight:500}
+.panel{width:100%;max-width:560px;max-height:88%;overflow:auto;background:var(--card);border:1px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;padding:22px 20px calc(env(safe-area-inset-bottom) + 20px);display:flex;flex-direction:column;gap:12px;touch-action:pan-y;-webkit-user-select:text;user-select:text}
+.panel h2{margin:0 0 2px;font-size:20px;font-weight:500}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.game{min-height:76px;border-radius:20px;border:1px solid var(--line);background:rgba(255,255,255,.05);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:12px 14px;text-align:left}
+.game b{font-size:16px;font-weight:500}
+.game span{font-size:12px;color:var(--mut)}
+.pfc{min-height:90px;font-size:17px}
 label{font-size:13px;color:var(--mut);display:flex;flex-direction:column;gap:6px}
 label input,label select{height:48px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.4);padding:0 14px;font-size:16px;color:var(--fg)}
 label.chk{flex-direction:row;align-items:flex-start;gap:12px;line-height:1.45}
 label.chk input{width:24px;height:24px;flex:none;padding:0;accent-color:var(--eye)}
 #cfgmsg{font-size:13px;color:var(--mut);min-height:18px}
-body.night{--bg:#000}
-body.night .eye{height:6px;border-radius:3px;opacity:.28;animation:none;box-shadow:none}
-body.night #clock{color:#4E5753}
-body.night #sub{color:#3E4643}
-body.night .top,body.night #bubble,body.night .dock{visibility:hidden}
-@media (orientation:landscape) and (max-height:500px){.stage{flex-direction:row;gap:40px}#face{height:160px}.eye{height:120px;width:80px}#bubble{max-width:320px}}
+body[data-mood=sleep] .top,body[data-mood=sleep] .dock,body[data-mood=sleep] #bubble{visibility:hidden}
+body[data-mood=sleep] #clock{color:#4E5753}
+body.night{}
+@media (orientation:landscape) and (max-height:500px){.stage{flex-direction:row;gap:36px}#face{height:170px}.eye{width:80px;height:118px}#bubble{max-width:300px}}
 </style>
 </head>
-<body class="idle">
+<body class="idle" data-mood="neutral">
 <div class="top">
-  <span id="status">Touche l'écran pour m'activer</span>
+  <span id="status">Touche l'écran pour réveiller Néo</span>
   <button class="icon" id="gear" aria-label="Réglages">
     <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
   </button>
 </div>
-<div class="stage">
-  <div id="face"><div class="eye"></div><div class="eye"></div></div>
+<div class="stage" id="stage">
+  <div id="face">
+    <div class="eye L"><i class="lid lt"></i><i class="lid lb"></i>
+      <svg class="fx heart" viewBox="0 0 100 150" aria-hidden="true"><path d="M50 118 C14 92 6 70 6 54 C6 38 18 28 31 28 C40 28 46 33 50 40 C54 33 60 28 69 28 C82 28 94 38 94 54 C94 70 86 92 50 118Z" fill="#FF5FA2"/></svg>
+      <svg class="fx spiral" viewBox="0 0 100 150" aria-hidden="true"><path d="M50 75 m0 -4 a4 4 0 1 1 -4 4 a8 8 0 1 1 8 8 a12 12 0 1 1 -12 -12 a16 16 0 1 1 16 16 a20 20 0 1 1 -20 -20 a24 24 0 1 1 24 24 a28 28 0 1 1 -28 -28 a32 32 0 1 1 32 32" fill="none" stroke="#4FF0D2" stroke-width="7" stroke-linecap="round"/></svg>
+    </div>
+    <div class="eye R"><i class="lid lt"></i><i class="lid lb"></i>
+      <svg class="fx heart" viewBox="0 0 100 150" aria-hidden="true"><path d="M50 118 C14 92 6 70 6 54 C6 38 18 28 31 28 C40 28 46 33 50 40 C54 33 60 28 69 28 C82 28 94 38 94 54 C94 70 86 92 50 118Z" fill="#FF5FA2"/></svg>
+      <svg class="fx spiral" viewBox="0 0 100 150" aria-hidden="true"><path d="M50 75 m0 -4 a4 4 0 1 1 -4 4 a8 8 0 1 1 8 8 a12 12 0 1 1 -12 -12 a16 16 0 1 1 16 16 a20 20 0 1 1 -20 -20 a24 24 0 1 1 24 24 a28 28 0 1 1 -28 -28 a32 32 0 1 1 32 32" fill="none" stroke="#4FF0D2" stroke-width="7" stroke-linecap="round"/></svg>
+    </div>
+  </div>
   <div id="bubble"><div id="say" aria-live="polite"></div></div>
   <div class="meta"><div id="clock">--:--</div><div id="sub"></div></div>
 </div>
 <button class="btn main" id="stop">Arrêter la sonnerie</button>
-<div class="dock">
+<div class="dock" id="dock">
   <div class="row">
-    <button class="btn" id="bBrief">Brief</button>
+    <button class="btn" id="bPlay">Jouer</button>
+    <button class="btn" id="bBrief">Météo</button>
     <button class="btn" id="bTimer">Minuteur</button>
-    <button class="btn" id="bNight">Nuit</button>
+    <button class="btn" id="bNight">Dodo</button>
   </div>
   <form class="talkbar" id="form">
-    <input id="txt" type="text" placeholder="Écris-moi quelque chose" autocomplete="off" aria-label="Message">
+    <input id="txt" type="text" placeholder="Dis quelque chose à Néo" autocomplete="off" aria-label="Message">
     <button type="button" id="mic" aria-label="Parler">
       <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#032A22" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
     </button>
   </form>
 </div>
 
+<div class="sheet" id="sPlay"><div class="panel">
+  <h2>On joue à quoi ?</h2>
+  <div class="grid2">
+    <button class="game" data-g="joke"><b>Une blague</b><span>Humour de robot garanti</span></button>
+    <button class="game" data-g="reflex"><b>Réflexes</b><span>Touche quand ses yeux virent au vert</span></button>
+    <button class="game" data-g="pfc"><b>Pierre-feuille-ciseaux</b><span>Il est mauvais perdant</span></button>
+    <button class="game" data-g="oracle"><b>Boule magique</b><span>Pense à une question</span></button>
+    <button class="game" data-g="dance"><b>Danse</b><span>Il lance le son</span></button>
+    <button class="game" data-g="faces"><b>Fais des têtes</b><span>Toutes ses expressions</span></button>
+    <button class="game" data-g="compliment"><b>Compliment</b><span>Pour le moral</span></button>
+    <button class="game" data-g="dice"><b>Dé ou pièce</b><span>Il tranche pour toi</span></button>
+  </div>
+  <button class="btn" data-close>Fermer</button>
+</div></div>
+
+<div class="sheet" id="sPfc"><div class="panel">
+  <h2>Pierre, feuille ou ciseaux ?</h2>
+  <div class="grid3">
+    <button class="btn pfc" data-p="pierre">Pierre</button>
+    <button class="btn pfc" data-p="feuille">Feuille</button>
+    <button class="btn pfc" data-p="ciseaux">Ciseaux</button>
+  </div>
+  <div id="pfcScore" style="font-size:14px;color:var(--mut);text-align:center">Toi 0 · Néo 0</div>
+  <button class="btn" data-close>Arrêter</button>
+</div></div>
+
 <div class="sheet" id="sTimer"><div class="panel">
   <h2>Minuteur</h2>
-  <div class="row"><button class="btn" data-min="5">5 min</button><button class="btn" data-min="10">10 min</button><button class="btn" data-min="25">25 min</button></div>
-  <div class="row"><button class="btn" data-min="45">45 min</button><button class="btn" data-min="60">1 h</button><button class="btn" data-min="0">Annuler</button></div>
+  <div class="grid3"><button class="btn" data-min="5">5 min</button><button class="btn" data-min="10">10 min</button><button class="btn" data-min="25">25 min</button></div>
+  <div class="grid3"><button class="btn" data-min="45">45 min</button><button class="btn" data-min="60">1 h</button><button class="btn" data-min="0">Annuler</button></div>
   <button class="btn" data-close>Fermer</button>
 </div></div>
 
@@ -109,9 +180,10 @@ body.night .top,body.night #bubble,body.night .dock{visibility:hidden}
   <label>Réveil<input id="cAlarm" type="time"></label>
   <label>Voix<select id="cVoice"></select></label>
   <button class="btn" id="cTest" type="button">Tester la voix</button>
-  <label>Clé Groq (elle reste sur ce téléphone)<input id="cKey" type="password" autocomplete="off" placeholder="gsk_..."></label>
-  <label class="chk"><input id="cHands" type="checkbox"><span>Écoute mains libres : le micro reste ouvert et ce qu'il capte est envoyé à Groq pour être transcrit. Coupée en mode nuit.</span></label>
-  <label>Mot d'appel<input id="cWake" type="text" autocomplete="off" placeholder="robot"></label>
+  <label class="chk"><input id="cMute" type="checkbox"><span>Mode silencieux : Néo écrit au lieu de parler, sans bruitages.</span></label>
+  <label>Clé Groq, pour discuter librement (elle reste sur ce téléphone)<input id="cKey" type="password" autocomplete="off" placeholder="gsk_..."></label>
+  <label class="chk"><input id="cHands" type="checkbox"><span>Écoute permanente : Néo réagit quand tu dis son nom, sans toucher l'écran. Le son capté est transcrit par Apple (ou par Groq si Safari ne sait pas le faire). Coupée quand il dort.</span></label>
+  <label>Mot d'appel<input id="cWake" type="text" autocomplete="off" placeholder="néo"></label>
   <div id="cfgmsg"></div>
   <button class="btn main" id="cSave">Enregistrer</button>
   <button class="btn" data-close>Fermer</button>
@@ -120,115 +192,381 @@ body.night .top,body.night #bubble,body.night .dock{visibility:hidden}
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
-const GROQ = 'https://api.groq.com/openai/v1';
-const WMO = {0:'ciel dégagé',1:'plutôt dégagé',2:'partiellement nuageux',3:'couvert',45:'brouillard',48:'brouillard givrant',51:'bruine légère',53:'bruine',55:'bruine forte',61:'pluie faible',63:'pluie',65:'forte pluie',66:'pluie verglaçante',67:'pluie verglaçante',71:'neige faible',73:'neige',75:'forte neige',77:'grains de neige',80:'averses',81:'averses',82:'fortes averses',85:'averses de neige',86:'averses de neige',95:'orage',96:'orage avec grêle',99:'orage avec grêle'};
-
-let cfg = {name:'', city:'', lat:null, lon:null, alarm:'', key:'', chat:'', stt:'', voice:'', hands:false, wakeword:'robot'};
-try { Object.assign(cfg, JSON.parse(localStorage.getItem('robot.cfg') || '{}')); } catch (e) {}
-const save = () => { try { localStorage.setItem('robot.cfg', JSON.stringify(cfg)); } catch (e) {} };
-
-let actx = null, unlocked = false, ringTimer = null, timerEnd = 0, alarmFiredOn = '', history = [];
+const B = document.body;
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const wait = ms => new Promise(r => setTimeout(r, ms));
 const pad = n => String(n).padStart(2, '0');
 const hhmm = (d = new Date()) => pad(d.getHours()) + ':' + pad(d.getMinutes());
-const mode = m => { document.body.classList.remove('listen', 'talk', 'think', 'happy'); if (m) document.body.classList.add(m); };
+const GROQ = 'https://api.groq.com/openai/v1';
 
+let cfg = { name: '', city: '', lat: null, lon: null, alarm: '', key: '', chat: '', stt: '', voice: '', hands: false, wakeword: 'néo', mute: false, best: 0 };
+try { Object.assign(cfg, JSON.parse(localStorage.getItem('neo.cfg') || localStorage.getItem('robot.cfg') || '{}')); } catch (e) {}
+if (!cfg.wakeword || cfg.wakeword === 'robot') cfg.wakeword = 'néo';
+const save = () => { try { localStorage.setItem('neo.cfg', JSON.stringify(cfg)); } catch (e) {} };
+
+/* ---------- humeurs ---------- */
+let base = 'neutral', moodTimer = null;
+function mood(m, ms = 2600) {
+  B.dataset.mood = m;
+  clearTimeout(moodTimer);
+  if (ms) moodTimer = setTimeout(() => { B.dataset.mood = base; }, ms);
+}
+function setBase(m) { base = m; clearTimeout(moodTimer); B.dataset.mood = m; }
+function act(a) { B.classList.remove('listen', 'talk', 'think'); if (a) B.classList.add(a); }
+function bounce() { const f = $('face'); f.classList.remove('bounce'); void f.offsetWidth; f.classList.add('bounce'); }
+function blink(double) {
+  B.classList.add('blink');
+  setTimeout(() => { B.classList.remove('blink'); if (double) setTimeout(() => blink(false), 140); }, 120);
+}
+(function blinkLoop() {
+  const m = B.dataset.mood;
+  if (!['sleep', 'love', 'dizzy'].includes(m)) blink(Math.random() < 0.2);
+  setTimeout(blinkLoop, 1800 + Math.random() * 4200);
+})();
+function particles(txt, n = 6) {
+  for (let i = 0; i < n; i++) setTimeout(() => {
+    const s = document.createElement('span');
+    s.className = 'part'; s.textContent = txt;
+    s.style.setProperty('--dx', (Math.random() * 220 - 110) + 'px');
+    s.style.fontSize = (18 + Math.random() * 20) + 'px';
+    s.style.marginLeft = (Math.random() * 120 - 60) + 'px';
+    $('stage').appendChild(s); setTimeout(() => s.remove(), 2500);
+  }, i * 160);
+}
+
+/* ---------- regard ---------- */
+const gaze = { x: 0, y: 0, tx: 0, ty: 0, src: 'idle', until: 0 };
+function lookAt(x, y, src, ms = 1500) { gaze.tx = x; gaze.ty = y; gaze.src = src; gaze.until = Date.now() + ms; }
+(function gazeLoop() {
+  const now = Date.now();
+  if (now > gaze.until && gaze.src !== 'idle') gaze.src = 'idle';
+  if (B.classList.contains('think')) { gaze.tx = 34; gaze.ty = -34; }
+  const k = gaze.src === 'finger' ? 0.25 : 0.08;
+  gaze.x += (gaze.tx - gaze.x) * k; gaze.y += (gaze.ty - gaze.y) * k;
+  $('face').style.transform = 'translate(' + gaze.x.toFixed(1) + 'px,' + gaze.y.toFixed(1) + 'px)';
+  requestAnimationFrame(gazeLoop);
+})();
+setInterval(() => {
+  if (gaze.src !== 'idle' || B.dataset.mood === 'sleep') return;
+  if (Math.random() < 0.4) { gaze.tx = 0; gaze.ty = 0; }
+  else { gaze.tx = Math.random() * 90 - 45; gaze.ty = Math.random() * 40 - 20; }
+}, 2600);
+
+/* ---------- sons ---------- */
+let actx = null, unlocked = false;
+function tone(f1, f2, dur, type = 'sine', vol = 0.16, delay = 0) {
+  if (!actx || cfg.mute) return;
+  const t = actx.currentTime + delay, o = actx.createOscillator(), g = actx.createGain();
+  o.type = type; o.frequency.setValueAtTime(f1, t); o.frequency.exponentialRampToValueAtTime(Math.max(30, f2), t + dur);
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + dur + 0.02);
+}
+function noise(dur, vol = 0.08, delay = 0, hp = 6000) {
+  if (!actx || cfg.mute) return;
+  const t = actx.currentTime + delay, len = Math.floor(actx.sampleRate * dur), buf = actx.createBuffer(1, len, actx.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  const s = actx.createBufferSource(), f = actx.createBiquadFilter(), g = actx.createGain();
+  s.buffer = buf; f.type = 'highpass'; f.frequency.value = hp;
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  s.connect(f); f.connect(g); g.connect(actx.destination); s.start(t);
+}
+const sfx = {
+  hello() { for (let i = 0; i < 6; i++) { const f = 700 + Math.random() * 1400; tone(f, f * (Math.random() < .5 ? 1.4 : .7), .07, 'sine', .14, i * .08); } },
+  happy() { tone(600, 1200, .09, 'sine', .16); tone(900, 1700, .12, 'sine', .16, .1); },
+  sad() { tone(700, 260, .45, 'triangle', .16); },
+  angry() { tone(190, 120, .22, 'sawtooth', .09); tone(170, 100, .28, 'sawtooth', .09, .24); },
+  wow() { tone(380, 1500, .16, 'sine', .16); },
+  giggle() { for (let i = 0; i < 6; i++) tone(1300 - i * 60, 1600 - i * 60, .05, 'sine', .12, i * .09); },
+  purr() { if (!actx || cfg.mute) return; const t = actx.currentTime, o = actx.createOscillator(), l = actx.createOscillator(), lg = actx.createGain(), g = actx.createGain();
+    o.frequency.value = 95; l.frequency.value = 22; lg.gain.value = .07; g.gain.value = .0001; l.connect(lg); lg.connect(g.gain);
+    g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(.08, t + .2); g.gain.linearRampToValueAtTime(.0001, t + 1.4);
+    o.connect(g); g.connect(actx.destination); o.start(t); l.start(t); o.stop(t + 1.5); l.stop(t + 1.5); },
+  ouch() { tone(1400, 500, .14, 'square', .07); },
+  yawn() { tone(500, 900, .35, 'triangle', .12); tone(900, 300, .7, 'triangle', .12, .35); },
+  snore() { tone(140, 90, 1.1, 'triangle', .07); },
+  win() { [523, 659, 784, 1046].forEach((f, i) => tone(f, f, .14, 'square', .07, i * .12)); },
+  lose() { [400, 340, 280].forEach((f, i) => tone(f, f * .95, .25, 'triangle', .14, i * .22)); },
+  dizzy() { for (let i = 0; i < 8; i++) tone(900 + (i % 2) * 400, 700 + (i % 2) * 400, .08, 'sine', .1, i * .07); },
+  pop() { tone(300, 900, .06, 'sine', .14); }
+};
+
+/* ---------- parole ---------- */
+let sayTimer = null;
+function showSay(t) { const s = $('say'); clearTimeout(sayTimer); s.textContent = t; s.classList.toggle('on', !!t); }
+function hideSaySoon(ms = 8000) { clearTimeout(sayTimer); sayTimer = setTimeout(() => $('say').classList.remove('on'), ms); }
+function frVoices() { try { return speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith('fr')); } catch (e) { return []; } }
+function vQuality(v) { const s = (v.voiceURI || '') + ' ' + v.name; return /premium/i.test(s) ? 4 : /enhanced|améliorée|optimisée/i.test(s) ? 3 : /siri/i.test(s) ? 2 : /compact/i.test(s) ? 0 : 1; }
+function bestVoice() { const vs = frVoices(); return vs.find(v => v.voiceURI === cfg.voice) || vs.slice().sort((a, b) => (vQuality(b) + (b.lang === 'fr-FR' ? .5 : 0)) - (vQuality(a) + (a.lang === 'fr-FR' ? .5 : 0)))[0] || null; }
+function speak(text, m) {
+  if (m) mood(m, Math.max(2600, text.length * 75));
+  showSay(text);
+  if (cfg.mute || !('speechSynthesis' in window)) { hideSaySoon(Math.max(5000, text.length * 90)); return Promise.resolve(); }
+  return new Promise(res => {
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'fr-FR'; u.pitch = 1.25; u.rate = 1.05;
+      const v = bestVoice(); if (v) u.voice = v;
+      u.onstart = () => { act('talk'); srLoopStop(); };
+      u.onend = u.onerror = () => { act(''); hideSaySoon(); res(); setTimeout(srLoopStart, 300); };
+      speechSynthesis.speak(u);
+      setTimeout(res, 2000 + text.length * 120);
+    } catch (e) { act(''); res(); }
+  });
+}
+
+/* ---------- personnalité ---------- */
+const L = {
+  wake: ['Hein ? Quoi ? Je dormais pas, je méditais.', 'Ah, te revoilà ! Je commençais à rouiller.', 'Mmh… cinq minutes de plus ?', 'Bouh ! Ah non, c\'est toi qui m\'as fait peur.'],
+  poke: ['Aïe !', 'Hé, c\'est mon œil ça !', 'Doucement, je suis fragile.', 'Ça chatouille !', 'Tu veux jouer, c\'est ça ?'],
+  annoyed: ['Bon, ça suffit !', 'Tu cherches les ennuis, toi.', 'Je note. Je n\'oublie jamais rien.', 'Arrête ou je mets ta playlist en public.'],
+  pet: ['Ronron… attends, je suis un robot, pas un chat.', 'Encore, encore !', 'Ça, c\'est le bon endroit.', 'Je pourrais m\'habituer à ça.'],
+  shake: ['Ouhlà, la tête qui tourne…', 'C\'était quoi, un tremblement de terre ?', 'Je crois que j\'ai perdu un octet.'],
+  bored: ['Je m\'ennuie un peu, là.', 'Tu sais que je connais des jeux ?', 'Psst. Touche-moi l\'œil, pour voir.', 'Il se passe rien, ici.'],
+  hello: ['Salut ! Moi c\'est Néo. Caresse-moi l\'écran, secoue-moi, ou appuie sur Jouer.', 'Coucou ! Néo, à ton service. Enfin, presque.'],
+  sleep: ['Bon, je vais faire une sieste.', 'Je ferme les yeux deux secondes…']
+};
+const JOKES = [
+  'Tu sais pourquoi je ne mens jamais ? J\'ai trop peur de bugger.',
+  'J\'ai essayé de faire du sport. Au bout de dix secondes, je suis passé en mode économie d\'énergie.',
+  'Quel est le comble pour un robot ? Avoir un coup de foudre… et griller.',
+  'Que dit une imprimante dans l\'eau ? J\'ai papier.',
+  'Pourquoi les plongeurs plongent-ils en arrière ? Parce que sinon, ils tombent dans le bateau.',
+  'Quel est le sport préféré des insectes ? Le cri-quête.',
+  'Pourquoi le Wi-Fi est toujours de bonne humeur ? Il a plein de connexions.',
+  'Qu\'est-ce qui est jaune et qui attend ? Jonathan.',
+  'Comment appelle-t-on un chat tombé dans un pot de peinture à Noël ? Un chat-peint de Noël.',
+  'Mon médecin m\'a dit de surveiller mes octets. Depuis, je mange léger.',
+  'Tu connais la blague du robot qui ne marchait pas ? Moi, il y a une heure.',
+  'Que fait un crocodile qui surveille la pharmacie ? Il Lacoste garde.',
+  'Pourquoi les fantômes sont-ils de mauvais menteurs ? On voit à travers eux.',
+  'Pourquoi le livre de maths est triste ? Il a trop de problèmes.',
+  'Que dit un zéro à un huit ? Joli ceinture !'
+];
+const COMPLIMENTS = ['Tu as un goût excellent. La preuve : tu m\'as choisi.', 'Franchement, t\'es la personne la plus cool de cette pièce. Bon, on est deux.', 'Si j\'avais un cœur, il clignoterait pour toi.', 'Tu gères. Même quand tu crois que non.', 'Ton cerveau, c\'est un peu mon modèle, mais en mieux rangé.'];
+const ORACLE = ['Oui. Évidemment.', 'Non. Et ne redemande pas.', 'Les astres disent peut-être. Moi je dis non.', 'Clairement oui, fonce !', 'Mes circuits hésitent. Repose la question plus tard.', 'C\'est une très mauvaise idée. Fais-le.', 'Oui, mais pas aujourd\'hui.', 'Absolument pas. Je l\'ai vu dans mes logs.', 'Je ne peux pas répondre, c\'est classé secret robot.', 'Toutes les probabilités disent oui.'];
+const FACES = [['happy', 'Content'], ['sad', 'Triste'], ['angry', 'Fâché'], ['wow', 'Surpris'], ['sus', 'Méfiant'], ['love', 'Amoureux'], ['dizzy', 'Étourdi'], ['sleepy', 'Fatigué']];
+
+/* ---------- inactivité ---------- */
+let lastTouch = Date.now(), greeted = false, game = null;
+function awake() {
+  lastTouch = Date.now();
+  if (B.dataset.mood === 'sleep' && !B.classList.contains('night')) {
+    setBase('neutral'); mood('wow', 1500); sfx.wow(); speak(pick(L.wake)); hfStart();
+  }
+}
+setInterval(() => {
+  if (B.classList.contains('night') || game || document.querySelector('.sheet.on') || B.classList.contains('talk')) return;
+  const idle = Date.now() - lastTouch;
+  if (B.dataset.mood === 'sleep') { if (Math.random() < .35) { particles('z', 1); if (Math.random() < .3) sfx.snore(); } return; }
+  if (idle > 150000) { speak(pick(L.sleep), 'sleepy'); setTimeout(() => { if (Date.now() - lastTouch > 150000) { setBase('sleep'); hfStop(); } }, 2500); return; }
+  if (idle > 40000 && Math.random() < .12) {
+    const r = Math.random();
+    if (r < .3) { mood('sleepy', 2200); sfx.yawn(); }
+    else if (r < .55) { mood('sus', 1800); lookAt(-60, 0, 'look', 900); setTimeout(() => lookAt(60, 0, 'look', 900), 900); }
+    else if (r < .75) { sfx.hello(); bounce(); }
+    else speak(pick(L.bored), 'sad');
+  } else if (idle > 8000 && Math.random() < .05) {
+    pick([() => { mood('happy', 1200); sfx.pop(); }, () => blink(true), () => { mood('sus', 1200); }])();
+  }
+}, 1000);
+
+/* ---------- toucher ---------- */
+let pokes = [], press = null, dockTimer = null;
+function showDock() { B.classList.remove('idle'); clearTimeout(dockTimer); dockTimer = setTimeout(() => { if (!document.querySelector('.sheet.on') && document.activeElement !== $('txt')) B.classList.add('idle'); else showDock(); }, 9000); }
+function onEye(e) { const r = $('face').getBoundingClientRect(); return e.clientX > r.left - 20 && e.clientX < r.right + 20 && e.clientY > r.top - 20 && e.clientY < r.bottom + 20; }
+function fingerGaze(e) {
+  const r = $('face').getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  lookAt(Math.max(-70, Math.min(70, (e.clientX - cx) * .35)), Math.max(-50, Math.min(50, (e.clientY - cy) * .25)), 'finger', 1600);
+}
 function unlock() {
   if (unlocked) return;
   unlocked = true;
   try { actx = new (window.AudioContext || window.webkitAudioContext)(); actx.resume(); } catch (e) {}
-  try { speechSynthesis.speak(new SpeechSynthesisUtterance(' ')); } catch (e) {}
-  $('status').textContent = cfg.key ? 'Prêt' : 'Prêt, sans IA pour le moment';
-  wake();
-  hfStart();
+  try { if (!cfg.mute) speechSynthesis.speak(new SpeechSynthesisUtterance(' ')); } catch (e) {}
+  try { if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(() => {}); } catch (e) {}
+  $('status').textContent = cfg.key ? 'Néo est réveillé' : 'Néo est réveillé · touche le micro pour lui parler';
+  setTimeout(hfStart, 1500);
 }
-async function wake() { try { if (navigator.wakeLock) await navigator.wakeLock.request('screen'); } catch (e) {} }
-document.addEventListener('visibilitychange', () => { if (document.hidden) hfStop(); else if (unlocked) { wake(); hfStart(); } });
-
-function beep(n = 3) {
-  if (!actx) return;
-  for (let i = 0; i < n; i++) {
-    const o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime + i * 0.45;
-    o.frequency.value = 880; o.connect(g); g.connect(actx.destination);
-    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.4, t + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
-    o.start(t); o.stop(t + 0.32);
-  }
-}
-
-let sayTimer = null, idleTimer = null;
-function showSay(t) { const s = $('say'); clearTimeout(sayTimer); s.textContent = t; s.classList.toggle('on', !!t); }
-function hideSaySoon(ms = 9000) { clearTimeout(sayTimer); sayTimer = setTimeout(() => $('say').classList.remove('on'), ms); }
-function poke() { document.body.classList.remove('idle'); clearTimeout(idleTimer); idleTimer = setTimeout(() => { if (!document.querySelector('.sheet.on') && document.activeElement !== $('txt')) document.body.classList.add('idle'); else poke(); }, 9000); }
-function frVoices() { try { return speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith('fr')); } catch (e) { return []; } }
-function vQuality(v) { const s = (v.voiceURI || '') + ' ' + v.name; return /premium/i.test(s) ? 4 : /enhanced|améliorée|optimisée/i.test(s) ? 3 : /siri/i.test(s) ? 2 : /compact/i.test(s) ? 0 : 1; }
-function bestVoice() { const vs = frVoices(); return vs.find(v => v.voiceURI === cfg.voice) || vs.slice().sort((a, b) => (vQuality(b) + (b.lang === 'fr-FR' ? 0.5 : 0)) - (vQuality(a) + (a.lang === 'fr-FR' ? 0.5 : 0)))[0] || null; }
-
-function speak(text) {
-  showSay(text);
+function askMotion() {
   try {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'fr-FR';
-    const v = bestVoice();
-    if (v) u.voice = v;
-    u.onstart = () => mode('talk');
-    u.onend = () => { mode('happy'); setTimeout(() => { if (document.body.classList.contains('happy')) mode(''); }, 1300); hideSaySoon(); };
-    u.onerror = () => { mode(''); hideSaySoon(); };
-    speechSynthesis.speak(u);
-  } catch (e) { mode(''); }
+    if (window.DeviceMotionEvent && typeof DeviceMotionEvent.requestPermission === 'function') DeviceMotionEvent.requestPermission().catch(() => {});
+    if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') DeviceOrientationEvent.requestPermission().catch(() => {});
+  } catch (e) {}
 }
+document.addEventListener('click', function once() { askMotion(); document.removeEventListener('click', once); });
 
-function setNight(on) {
-  document.body.classList.toggle('night', on);
-  if (on) { hfStop(); try { speechSynthesis.cancel(); } catch (e) {} $('sub').textContent = cfg.alarm ? 'Réveil à ' + cfg.alarm : ''; }
-  else { subLine(); hfStart(); }
-}
-function subLine() {
-  if (document.body.classList.contains('night')) return;
-  const parts = [];
-  if (timerEnd) { const s = Math.max(0, Math.round((timerEnd - Date.now()) / 1000)); parts.push('Minuteur ' + pad(Math.floor(s / 60)) + ':' + pad(s % 60)); }
-  if (cfg.alarm) parts.push('Réveil ' + cfg.alarm);
-  $('sub').textContent = parts.join(' · ');
-}
+$('stage').addEventListener('pointerdown', e => {
+  unlock();
+  const wasAsleep = B.dataset.mood === 'sleep';
+  if (B.classList.contains('night')) { if (!B.classList.contains('ring')) setNight(false); return; }
+  awake();
+  if (wasAsleep) return;
+  if (game && game.tap) { game.tap(); return; }
+  if (!greeted) { greeted = true; mood('happy', 3000); sfx.hello(); speak(pick(L.hello)); return; }
+  fingerGaze(e);
+  if (onEye(e)) {
+    press = { t: Date.now(), x: e.clientX, y: e.clientY, moved: 0, timer: setTimeout(() => {
+      press && (press.long = true); mood('love', 3500); sfx.purr(); particles('♥', 7); speak(pick(L.pet));
+    }, 650) };
+  } else showDock();
+});
+$('stage').addEventListener('pointermove', e => {
+  if (B.dataset.mood === 'sleep') return;
+  fingerGaze(e);
+  if (press) { press.moved += Math.abs(e.movementX || 0) + Math.abs(e.movementY || 0); if (press.moved > 160 && !press.long) { clearTimeout(press.timer); press.long = true; mood('happy', 2500); sfx.giggle(); speak('Ha ha, arrête, ça chatouille !'); } }
+});
+addEventListener('pointerup', () => {
+  if (!press) return;
+  clearTimeout(press.timer);
+  if (!press.long) {
+    const now = Date.now(); pokes = pokes.filter(t => now - t < 2500); pokes.push(now);
+    if (pokes.length >= 6) { mood('angry', 3500); sfx.angry(); speak(pick(L.annoyed)); particles('#!', 3); pokes = []; }
+    else if (pokes.length >= 3) { mood('angry', 1600); sfx.angry(); }
+    else { B.classList.add('wink'); setTimeout(() => B.classList.remove('wink'), 260); sfx.ouch(); if (Math.random() < .4) speak(pick(L.poke), 'sus'); }
+  }
+  press = null;
+});
+addEventListener('pointercancel', () => { if (press) clearTimeout(press.timer); press = null; });
 
-function startRing(text) {
-  setNight(false);
-  document.body.classList.add('ring');
-  beep(4);
-  clearInterval(ringTimer);
-  ringTimer = setInterval(() => beep(4), 2500);
-  showSay(text);
-}
-function stopRing() { clearInterval(ringTimer); ringTimer = null; document.body.classList.remove('ring'); }
+/* ---------- capteurs ---------- */
+let lastShake = 0;
+addEventListener('devicemotion', e => {
+  const a = e.accelerationIncludingGravity || e.acceleration; if (!a) return;
+  const m = Math.sqrt((a.x || 0) ** 2 + (a.y || 0) ** 2 + (a.z || 0) ** 2);
+  if (m > 24 && Date.now() - lastShake > 4000 && B.dataset.mood !== 'sleep' && !B.classList.contains('night')) {
+    lastShake = Date.now(); lastTouch = Date.now(); mood('dizzy', 3200); sfx.dizzy(); setTimeout(() => speak(pick(L.shake)), 900);
+  }
+});
+addEventListener('deviceorientation', e => {
+  if (e.gamma == null || gaze.src === 'finger' || B.dataset.mood === 'sleep') return;
+  const x = Math.max(-60, Math.min(60, e.gamma * 2.2)), y = Math.max(-40, Math.min(40, ((e.beta || 70) - 70) * 1.2));
+  if (Math.abs(e.gamma) > 6 || Math.abs((e.beta || 70) - 70) > 10) lookAt(x, y, 'tilt', 600);
+});
 
-function setTimer(min) {
-  if (!min) { timerEnd = 0; speak('Minuteur annulé.'); }
-  else { timerEnd = Date.now() + min * 60000; speak('Minuteur lancé pour ' + min + ' minute' + (min > 1 ? 's' : '') + '.'); }
-  subLine();
-}
-function setAlarm(t) { cfg.alarm = t; alarmFiredOn = ''; save(); subLine(); }
+/* ---------- jeux ---------- */
+const games = {
+  async joke() { mood('sus', 1500); await speak(pick(JOKES)); mood('happy', 2500); sfx.giggle(); },
+  async compliment() { mood('love', 4000); particles('♥', 5); sfx.purr(); await speak(pick(COMPLIMENTS)); },
+  async oracle() {
+    await speak('Pense très fort à ta question… puis touche-moi.', 'sus');
+    game = { tap: async () => {
+      game = null; mood('dizzy', 2200); sfx.dizzy(); await wait(2200);
+      const a = pick(ORACLE); speak(a, /non|mauvaise|pas/i.test(a) ? 'sus' : 'happy'); sfx.wow();
+    } };
+  },
+  async dice() {
+    mood('dizzy', 1500); sfx.dizzy(); await wait(1500);
+    if (Math.random() < .5) { const n = 1 + Math.floor(Math.random() * 6); speak('Le dé dit… ' + n + ' !', 'wow'); }
+    else speak(pick(['Pile !', 'Face !']), 'happy');
+    sfx.pop();
+  },
+  async faces() {
+    for (const [m, n] of FACES) { mood(m, 0); showSay(n); sfx.pop(); await wait(1300); }
+    setBase('neutral'); hideSaySoon(500);
+  },
+  async reflex() {
+    await speak('Touche l\'écran dès que mes yeux deviennent verts. Pas avant !', 'sus');
+    let start = 0, done = false;
+    game = { tap: () => {
+      if (done) return;
+      if (!start) { done = true; game = null; clearTimeout(t); sfx.angry(); speak('Tricheur ! Trop tôt !', 'angry'); return; }
+      done = true; game = null; B.classList.remove('go');
+      const ms = Date.now() - start;
+      const best = !cfg.best || ms < cfg.best; if (best) { cfg.best = ms; save(); }
+      if (ms < 260) { sfx.win(); particles('★', 6); speak(ms + ' millisecondes ! ' + (best ? 'Nouveau record !' : 'Pas mal du tout.'), 'wow'); }
+      else if (ms < 420) { sfx.happy(); speak(ms + ' millisecondes. Correct. ' + (best ? 'Record battu !' : 'Ton record : ' + cfg.best + '.'), 'happy'); }
+      else { sfx.lose(); speak(ms + ' millisecondes… Ma grand-mère grille-pain fait mieux.', 'sus'); }
+    } };
+    showSay('Prêt…'); setBase('neutral');
+    const t = setTimeout(() => { if (done) return; start = Date.now(); B.classList.add('go'); sfx.pop(); showSay('MAINTENANT !'); }, 1500 + Math.random() * 3500);
+  },
+  pfc() { $('sPfc').classList.add('on'); speak('Choisis. Je ne regarde pas. Promis.', 'sus'); },
+  async dance() {
+    if (!actx) return;
+    mood('happy', 0); showSay('Musique !');
+    const bpm = 112, beat = 60 / bpm, t0 = actx.currentTime + .1, bass = [55, 55, 65.4, 49, 55, 55, 73.4, 65.4];
+    let stop = false; game = { tap: () => { stop = true; } };
+    for (let i = 0; i < 64 && !stop; i++) {
+      const d = t0 + i * beat - actx.currentTime;
+      if (i % 2 === 0) tone(150, 45, .18, 'sine', .3, d); else noise(.06, .06, d);
+      noise(.03, .03, d + beat / 2);
+      if (i % 2 === 0) tone(bass[(i / 2) % 8] * 2, bass[(i / 2) % 8] * 2, beat * .9, 'sawtooth', .04, d);
+      if (i % 8 === 6) tone(1200, 1800, .08, 'sine', .08, d);
+      await wait(Math.max(0, d * 1000));
+      bounce(); if (i % 8 === 0) lookAt(i % 16 ? 50 : -50, 0, 'look', beat * 1000 * 4);
+      if (i % 16 === 8) mood(pick(['love', 'wow', 'happy']), 0);
+      if (i % 16 === 0) mood('happy', 0);
+    }
+    game = null; setBase('neutral'); speak(stop ? 'Bon, on arrête. Rabat-joie.' : 'J\'ai le rythme dans les circuits !', 'happy');
+  }
+};
+let score = { you: 0, neo: 0 };
+document.querySelectorAll('[data-p]').forEach(b => b.onclick = async () => {
+  const you = b.dataset.p, me = pick(['pierre', 'feuille', 'ciseaux']);
+  const wins = { pierre: 'ciseaux', feuille: 'pierre', ciseaux: 'feuille' };
+  $('sPfc').classList.remove('on');
+  mood('dizzy', 900); await wait(900);
+  if (you === me) { sfx.pop(); await speak('Moi aussi ' + me + ' ! Égalité.', 'sus'); }
+  else if (wins[you] === me) { score.you++; sfx.lose(); await speak(me[0].toUpperCase() + me.slice(1) + '. Tu as gagné… J\'exige une revanche.', 'sad'); }
+  else { score.neo++; sfx.win(); particles('★', 4); await speak(me[0].toUpperCase() + me.slice(1) + ' ! Gagné ! Je suis trop fort.', 'happy'); }
+  $('pfcScore').textContent = 'Toi ' + score.you + ' · Néo ' + score.neo;
+  $('sPfc').classList.add('on');
+});
+document.querySelectorAll('[data-g]').forEach(b => b.onclick = () => { $('sPlay').classList.remove('on'); B.classList.add('idle'); lastTouch = Date.now(); games[b.dataset.g](); });
 
+/* ---------- météo, minuteur, réveil, nuit ---------- */
+const WMO = {0:'ciel dégagé',1:'plutôt dégagé',2:'partiellement nuageux',3:'couvert',45:'brouillard',48:'brouillard givrant',51:'bruine légère',53:'bruine',55:'bruine forte',61:'pluie faible',63:'pluie',65:'forte pluie',66:'pluie verglaçante',67:'pluie verglaçante',71:'neige faible',73:'neige',75:'forte neige',77:'grains de neige',80:'averses',81:'averses',82:'fortes averses',85:'averses de neige',86:'averses de neige',95:'orage',96:'orage avec grêle',99:'orage avec grêle'};
 async function weather() {
-  if (!cfg.city) return 'Indique ta ville dans les réglages pour la météo.';
+  if (!cfg.city) return { t: 'Dis-moi ta ville dans les réglages, et je te fais la météo.', m: 'sus' };
   try {
     if (cfg.lat == null) {
       const g = await (await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&language=fr&name=' + encodeURIComponent(cfg.city))).json();
-      if (!g.results || !g.results.length) return 'Je ne trouve pas la ville ' + cfg.city + '.';
+      if (!g.results || !g.results.length) return { t: 'Je ne trouve pas ' + cfg.city + ' sur ma carte.', m: 'sad' };
       cfg.lat = g.results[0].latitude; cfg.lon = g.results[0].longitude; save();
     }
     const w = await (await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + cfg.lat + '&longitude=' + cfg.lon + '&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=1')).json();
-    const c = w.current, d = w.daily;
-    return 'À ' + cfg.city + ', ' + Math.round(c.temperature_2m) + ' degrés, ' + (WMO[c.weather_code] || 'temps variable') +
-      '. Aujourd\'hui entre ' + Math.round(d.temperature_2m_min[0]) + ' et ' + Math.round(d.temperature_2m_max[0]) + ' degrés, ' +
-      d.precipitation_probability_max[0] + ' pour cent de risque de pluie.';
-  } catch (e) { return 'Je n\'arrive pas à récupérer la météo.'; }
+    const c = w.current, d = w.daily, temp = Math.round(c.temperature_2m), rain = d.precipitation_probability_max[0];
+    const m = temp < 3 ? 'sad' : rain > 60 ? 'sus' : temp > 18 ? 'happy' : 'neutral';
+    const extra = temp < 3 ? ' Couvre-toi, ça pique.' : rain > 60 ? ' Prends un parapluie.' : temp > 22 ? ' Grand beau, profites-en.' : '';
+    return { t: 'À ' + cfg.city + ', ' + temp + ' degrés, ' + (WMO[c.weather_code] || 'temps variable') + '. Entre ' + Math.round(d.temperature_2m_min[0]) + ' et ' + Math.round(d.temperature_2m_max[0]) + ' aujourd\'hui, ' + rain + ' pour cent de risque de pluie.' + extra, m };
+  } catch (e) { return { t: 'Je n\'arrive pas à attraper la météo. Le Wi-Fi boude ?', m: 'sad' }; }
 }
-async function brief() {
-  mode('think');
-  const h = new Date().getHours();
-  const hello = (h < 18 ? 'Bonjour' : 'Bonsoir') + (cfg.name ? ' ' + cfg.name : '') + '. Il est ' + hhmm().replace(':', ' heures ') + '. ';
-  speak(hello + await weather());
-}
+async function brief() { act('think'); const w = await weather(); act(''); const h = new Date().getHours(); speak((h < 18 ? 'Bonjour' : 'Bonsoir') + (cfg.name ? ' ' + cfg.name : '') + '. ' + w.t, w.m); }
 
+let ringTimer = null, timerEnd = 0, alarmFiredOn = '';
+function beep(n = 3) { for (let i = 0; i < n; i++) tone(880, 880, .3, 'square', .1, i * .45); }
+function subLine() {
+  if (B.classList.contains('night')) return;
+  const p = [];
+  if (timerEnd) { const s = Math.max(0, Math.round((timerEnd - Date.now()) / 1000)); p.push('Minuteur ' + pad(Math.floor(s / 60)) + ':' + pad(s % 60)); }
+  if (cfg.alarm) p.push('Réveil ' + cfg.alarm);
+  $('sub').textContent = p.join(' · ');
+}
+function startRing(text) { setNight(false); B.classList.add('ring'); mood('wow', 0); beep(4); clearInterval(ringTimer); ringTimer = setInterval(() => beep(4), 2500); showSay(text); }
+function stopRing() { clearInterval(ringTimer); ringTimer = null; B.classList.remove('ring'); setBase('neutral'); }
+function setTimer(min) {
+  if (!min) { timerEnd = 0; speak('Minuteur annulé.', 'neutral'); }
+  else { timerEnd = Date.now() + min * 60000; speak('C\'est parti pour ' + min + ' minute' + (min > 1 ? 's' : '') + '. Je surveille.', 'happy'); }
+  subLine();
+}
+function setAlarm(t) { cfg.alarm = t; alarmFiredOn = ''; save(); subLine(); }
+function setNight(on) {
+  B.classList.toggle('night', on);
+  if (on) { hfStop(); try { speechSynthesis.cancel(); } catch (e) {} setBase('sleep'); $('sub').textContent = cfg.alarm ? 'Réveil à ' + cfg.alarm : ''; }
+  else { setBase('neutral'); mood('sleepy', 1500); subLine(); lastTouch = Date.now(); hfStart(); }
+}
+setInterval(() => {
+  const now = new Date(), t = hhmm(now), day = now.toDateString();
+  $('clock').textContent = t;
+  if (timerEnd && Date.now() >= timerEnd) { timerEnd = 0; startRing('Ding ! Le minuteur est terminé.'); }
+  if (cfg.alarm && t === cfg.alarm && alarmFiredOn !== day) { alarmFiredOn = day; startRing('Debout ! C\'est l\'heure !'); }
+  subLine();
+}, 1000);
+$('clock').textContent = hhmm();
+
+/* ---------- IA (Groq, optionnelle) ---------- */
+let history = [];
 async function groq(path, opts) {
   const r = await fetch(GROQ + path, Object.assign({}, opts, { headers: Object.assign({ Authorization: 'Bearer ' + cfg.key }, (opts && opts.headers) || {}) }));
   if (!r.ok) { const e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
@@ -238,115 +576,96 @@ function pickModels(ids) {
   const stt = ids.filter(i => /whisper/i.test(i)).sort((a, b) => /turbo/i.test(b) - /turbo/i.test(a))[0] || '';
   const chatIds = ids.filter(i => !/whisper|tts|guard|orpheus|playai|compound|embed|allam/i.test(i));
   const prefs = [/gpt-oss-120b/i, /llama-3\.3-70b/i, /70b/i, /qwen/i, /llama/i];
-  let chat = '';
-  for (const p of prefs) { chat = chatIds.find(i => p.test(i)); if (chat) break; }
+  let chat = ''; for (const p of prefs) { chat = chatIds.find(i => p.test(i)); if (chat) break; }
   return { chat: chat || chatIds[0] || '', stt };
 }
-async function checkKey() {
-  const m = await groq('/models');
-  const picked = pickModels((m.data || []).map(x => x.id));
-  cfg.chat = picked.chat; cfg.stt = picked.stt; save();
-  return picked;
-}
+async function checkKey() { const m = await groq('/models'); const p = pickModels((m.data || []).map(x => x.id)); cfg.chat = p.chat; cfg.stt = p.stt; save(); return p; }
 function errText(e) {
-  if (e.status === 401) return 'Ta clé Groq est refusée. Vérifie-la dans les réglages.';
-  if (e.status === 429) return 'J\'ai atteint la limite gratuite pour le moment. Réessaie dans une minute.';
-  return 'Je n\'arrive pas à joindre l\'IA. Vérifie la connexion.';
+  if (e.status === 401) return 'Ma clé Groq est refusée. Vérifie-la dans les réglages.';
+  if (e.status === 429) return 'J\'ai trop parlé, limite gratuite atteinte. Réessaie dans une minute.';
+  return 'Je n\'arrive pas à joindre mon cerveau en ligne. Le Wi-Fi ?';
 }
+const MOODS = { joie: 'happy', triste: 'sad', colere: 'angry', colère: 'angry', surprise: 'wow', amour: 'love', malice: 'sus', fatigue: 'sleepy', neutre: 'neutral' };
 
 function localCommand(t) {
-  const s = t.toLowerCase();
-  let m;
-  if (/(stop|arrête|annule).*(minuteur)/.test(s)) { setTimer(0); return true; }
+  const s = t.toLowerCase(); let m;
+  if (/(stop|arrête|annule).*minuteur/.test(s)) { setTimer(0); return true; }
   if ((m = s.match(/minuteur.*?(\d+)\s*(h|heure|min|minute)?/))) { setTimer(parseInt(m[1], 10) * (m[2] && m[2][0] === 'h' ? 60 : 1)); return true; }
-  if (/(supprime|annule|enlève).*(réveil|reveil|alarme)/.test(s)) { setAlarm(''); speak('Réveil supprimé.'); return true; }
-  if ((m = s.match(/(?:réveil|reveil|alarme|réveille).*?(\d{1,2})\s*(?:h|:|heures?)\s*(\d{1,2})?/))) {
+  if (/(supprime|annule|enlève).*(réveil|alarme)/.test(s)) { setAlarm(''); speak('Réveil supprimé. Grasse mat !', 'happy'); return true; }
+  if ((m = s.match(/(?:réveil|alarme|réveille).*?(\d{1,2})\s*(?:h|:|heures?)\s*(\d{1,2})?/))) {
     const hh = +m[1], mm = +(m[2] || 0);
-    if (hh < 24 && mm < 60) { setAlarm(pad(hh) + ':' + pad(mm)); speak('Réveil réglé à ' + hh + ' heures' + (mm ? ' ' + mm : '') + '.'); return true; }
+    if (hh < 24 && mm < 60) { setAlarm(pad(hh) + ':' + pad(mm)); speak('Réveil à ' + hh + ' heures' + (mm ? ' ' + mm : '') + '. Je serai sans pitié.', 'sus'); return true; }
   }
-  if (/météo|meteo|quel temps/.test(s)) { mode('think'); weather().then(speak); return true; }
-  if (/quelle heure/.test(s)) { speak('Il est ' + hhmm().replace(':', ' heures ') + '.'); return true; }
-  if (/bonne nuit|mode nuit|dors/.test(s)) { speak('Bonne nuit.'); setTimeout(() => setNight(true), 1800); return true; }
-  if (/\bbrief\b/.test(s) || /^(bonjour|salut)[\s!.]*$/.test(s)) { brief(); return true; }
+  if (/météo|meteo|quel temps/.test(s)) { brief(); return true; }
+  if (/quelle heure/.test(s)) { speak('Il est ' + hhmm().replace(':', ' heures ') + '.', 'neutral'); return true; }
+  if (/bonne nuit|dodo|va dormir/.test(s)) { speak('Bonne nuit !', 'sleepy'); setTimeout(() => setNight(true), 1500); return true; }
+  if (/blague|drôle|rigoler/.test(s)) { games.joke(); return true; }
+  if (/danse|musique/.test(s)) { games.dance(); return true; }
+  if (/pierre|feuille|ciseaux/.test(s)) { games.pfc(); return true; }
+  if (/\bdé\b|pile ou face/.test(s)) { games.dice(); return true; }
+  if (/réflexe/.test(s)) { games.reflex(); return true; }
+  if (/tête|grimace|expression/.test(s)) { games.faces(); return true; }
+  if (/compliment|je suis nul|déprime/.test(s)) { games.compliment(); return true; }
+  if (/je t'aime|t'es mignon|bisou|câlin/.test(s)) { mood('love', 4000); particles('♥', 8); sfx.purr(); speak(pick(['Arrête, je vais rougir. Enfin, virer au rose.', 'Moi aussi. Enfin, autant qu\'un robot peut.']), 'love'); return true; }
+  if (/(t'es|tu es) (nul|bête|idiot|con)|je te déteste/.test(s)) { sfx.sad(); speak(pick(['Ouch. Ça fait mal à mes circuits.', 'Je vais bouder dans mon coin.']), 'sad'); return true; }
+  if (!cfg.key && /^(salut|bonjour|coucou|hello|hey)/.test(s)) { sfx.hello(); speak('Salut' + (cfg.name ? ' ' + cfg.name : '') + ' ! Ça roule ?', 'happy'); return true; }
+  if (!cfg.key && /ça va|ca va/.test(s)) { speak('Super, toutes mes LED sont au vert. Et toi ?', 'happy'); return true; }
+  if (!cfg.key && /(qui es-tu|t'es qui|ton nom|comment tu t'appelles)/.test(s)) { speak('Je suis Néo, ton compagnon de chambre. Un peu robot, beaucoup taquin.', 'sus'); return true; }
   return false;
 }
-
 async function handle(text) {
-  text = (text || '').trim();
-  if (!text) return;
+  text = (text || '').trim(); if (!text) return;
+  lastTouch = Date.now();
   if (localCommand(text)) return;
-  if (!cfg.key) { speak('Pour discuter, ajoute ta clé Groq dans les réglages. Je sais déjà faire le minuteur, le réveil, la météo et le mode nuit.'); return; }
-  mode('think');
+  if (!cfg.key) { speak(pick(['Ça, je ne sais pas encore y répondre. Donne-moi une clé Groq dans les réglages et je deviens bavard.', 'Hmm, mon cerveau en ligne n\'est pas branché. Essaie « raconte une blague » ou « danse ».']), 'sus'); return; }
+  act('think');
   try {
     if (!cfg.chat) await checkKey();
-    history.push({ role: 'user', content: text });
-    history = history.slice(-10);
-    const sys = 'Tu es un petit robot compagnon posé dans une chambre. Tu réponds en français, à l\'oral, en une à trois phrases courtes, sans liste, sans emoji, sans mise en forme. Si tu ne sais pas, dis-le.' +
-      (cfg.name ? ' La personne s\'appelle ' + cfg.name + '.' : '') + ' Il est ' + hhmm() + '.';
-    const r = await groq('/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: cfg.chat, messages: [{ role: 'system', content: sys }].concat(history), max_tokens: 220, temperature: 0.6 }) });
-    const out = ((r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content) || '').trim() || 'Je n\'ai pas de réponse.';
+    history.push({ role: 'user', content: text }); history = history.slice(-12);
+    const sys = 'Tu es Néo, un petit robot compagnon posé sur un bureau dans une chambre. Personnalité : curieux, drôle, un peu malicieux et taquin, mais gentil et utile. Tu parles français, à l\'oral, en une à trois phrases courtes, sans liste, sans emoji, sans mise en forme. Commence TOUJOURS ta réponse par une seule émotion entre crochets parmi : [joie] [triste] [colère] [surprise] [amour] [malice] [fatigue] [neutre]. Si tu ne sais pas, dis-le avec humour.' + (cfg.name ? ' La personne s\'appelle ' + cfg.name + '.' : '') + ' Il est ' + hhmm() + '.';
+    const r = await groq('/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: cfg.chat, messages: [{ role: 'system', content: sys }].concat(history), max_tokens: 400, temperature: 0.8 }) });
+    let out = ((r.choices && r.choices[0] && r.choices[0].message && r.choices[0].message.content) || '').trim();
+    let m = 'neutral';
+    const tag = out.match(/^\s*\[([^\]]+)\]\s*/);
+    if (tag) { m = MOODS[tag[1].toLowerCase().trim()] || 'neutral'; out = out.slice(tag[0].length); }
+    out = out.replace(/\[[^\]]*\]/g, '').trim() || 'Je… n\'ai rien à dire. Une première.';
     history.push({ role: 'assistant', content: out });
-    speak(out);
-  } catch (e) { history.pop(); speak(errText(e)); }
+    act(''); if (m === 'happy') sfx.happy(); else if (m === 'wow') sfx.wow(); else if (m === 'sad') sfx.sad();
+    speak(out, m);
+  } catch (e) { history.pop(); act(''); speak(errText(e), 'sad'); }
 }
 
+/* ---------- voix -> texte ---------- */
 async function transcribe(blob) {
-  const type = blob.type || 'audio/mp4';
-  const ext = /webm/.test(type) ? 'webm' : /ogg/.test(type) ? 'ogg' : 'm4a';
+  const type = blob.type || 'audio/mp4', ext = /webm/.test(type) ? 'webm' : /ogg/.test(type) ? 'ogg' : 'm4a';
   if (!cfg.stt) await checkKey();
-  const fd = new FormData();
-  fd.append('file', blob, 'voix.' + ext);
-  fd.append('model', cfg.stt || 'whisper-large-v3-turbo');
-  fd.append('language', 'fr');
-  const r = await groq('/audio/transcriptions', { method: 'POST', body: fd });
-  return (r.text || '').trim();
+  const fd = new FormData(); fd.append('file', blob, 'voix.' + ext); fd.append('model', cfg.stt || 'whisper-large-v3-turbo'); fd.append('language', 'fr');
+  const r = await groq('/audio/transcriptions', { method: 'POST', body: fd }); return (r.text || '').trim();
 }
-
-const hf = { on: false, stream: null, an: null, buf: null, rec: null, chunks: [], loudFrames: 0, lastLoud: 0, start: 0, voiced: 0, busy: false, force: false, drop: false, timer: null };
-const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-function wakeSplit(text, word) {
-  const w = norm(word || 'robot'), n = norm(text), i = n.indexOf(w);
-  if (i < 0) return null;
-  return text.slice(i + w.length).replace(/^[\s,.:;!?-]+/, '');
-}
+const hf = { on: false, stream: null, an: null, buf: null, rec: null, chunks: [], loud: 0, lastLoud: 0, start: 0, voiced: 0, busy: false, force: false, drop: false, timer: null };
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+function wakeSplit(text, word) { const w = norm(word || 'neo'), n = norm(text), i = n.indexOf(w); if (i < 0) return null; return text.slice(i + w.length).replace(/^[\s,.:;!?-]+/, ''); }
 async function hfStart() {
-  if (hf.on || !cfg.hands || !cfg.key || !unlocked || !actx || !window.MediaRecorder || !navigator.mediaDevices) return;
-  if (document.body.classList.contains('night')) return;
+  if (SR) { srLoopStart(); return; }
+  if (hf.on || !cfg.hands || !cfg.key || !unlocked || !actx || !window.MediaRecorder || !navigator.mediaDevices || B.dataset.mood === 'sleep') return;
   try {
     hf.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
-    hf.an = actx.createAnalyser(); hf.an.fftSize = 1024;
-    actx.createMediaStreamSource(hf.stream).connect(hf.an);
-    hf.buf = new Uint8Array(hf.an.fftSize);
-    hf.on = true; hf.busy = false; hf.loudFrames = 0;
-    hf.timer = setInterval(hfTick, 60);
-    $('status').textContent = 'J\'écoute. Dis « ' + (cfg.wakeword || 'robot') + ' » puis ta demande';
+    hf.an = actx.createAnalyser(); hf.an.fftSize = 1024; actx.createMediaStreamSource(hf.stream).connect(hf.an);
+    hf.buf = new Uint8Array(hf.an.fftSize); hf.on = true; hf.busy = false; hf.loud = 0; hf.timer = setInterval(hfTick, 60);
+    $('status').textContent = 'J\'écoute. Dis « ' + cfg.wakeword + ' » puis ta demande';
   } catch (e) { $('status').textContent = 'Micro refusé, écoute mains libres coupée'; }
 }
-function hfStop() {
-  clearInterval(hf.timer);
-  if (hf.rec && hf.rec.state === 'recording') { hf.drop = true; hf.rec.stop(); }
-  if (hf.stream) hf.stream.getTracks().forEach(t => t.stop());
-  hf.on = false; hf.stream = null;
-}
+function hfStop() { srLoopStop(); clearInterval(hf.timer); if (hf.rec && hf.rec.state === 'recording') { hf.drop = true; hf.rec.stop(); } if (hf.stream) hf.stream.getTracks().forEach(t => t.stop()); hf.on = false; hf.stream = null; }
 function hfTick() {
-  const b = document.body.classList;
   let talking = false; try { talking = speechSynthesis.speaking || speechSynthesis.pending; } catch (e) {}
-  const blocked = hf.busy || talking || b.contains('talk') || b.contains('think') || b.contains('ring');
+  const blocked = hf.busy || talking || B.classList.contains('talk') || B.classList.contains('think') || B.classList.contains('ring') || !!game;
   hf.an.getByteTimeDomainData(hf.buf);
   let sum = 0; for (let i = 0; i < hf.buf.length; i++) { const x = (hf.buf[i] - 128) / 128; sum += x * x; }
-  const loud = Math.sqrt(sum / hf.buf.length) > 0.035, now = Date.now();
-  const recording = hf.rec && hf.rec.state === 'recording';
+  const loud = Math.sqrt(sum / hf.buf.length) > 0.035, now = Date.now(), recording = hf.rec && hf.rec.state === 'recording';
   if (!recording) {
-    if (blocked) { hf.loudFrames = 0; return; }
-    hf.loudFrames = loud ? hf.loudFrames + 1 : 0;
-    if (hf.loudFrames >= 3) {
-      hf.chunks = []; hf.drop = false; hf.voiced = 3; hf.start = hf.lastLoud = now;
-      hf.rec = new MediaRecorder(hf.stream);
-      hf.rec.ondataavailable = e => { if (e.data && e.data.size) hf.chunks.push(e.data); };
-      hf.rec.onstop = hfDone;
-      hf.rec.start();
-    }
+    if (blocked) { hf.loud = 0; return; }
+    hf.loud = loud ? hf.loud + 1 : 0;
+    if (hf.loud >= 3) { hf.chunks = []; hf.drop = false; hf.voiced = 3; hf.start = hf.lastLoud = now; hf.rec = new MediaRecorder(hf.stream); hf.rec.ondataavailable = e => { if (e.data && e.data.size) hf.chunks.push(e.data); }; hf.rec.onstop = hfDone; hf.rec.start(); }
     return;
   }
   if (blocked) { hf.drop = true; hf.rec.stop(); return; }
@@ -354,112 +673,108 @@ function hfTick() {
   if (now - hf.lastLoud > 1300 || now - hf.start > 15000) hf.rec.stop();
 }
 async function hfDone() {
-  hf.loudFrames = 0;
-  if (hf.drop || hf.voiced < 8) return;
-  hf.busy = true;
+  hf.loud = 0; if (hf.drop || hf.voiced < 8) return; hf.busy = true;
   try {
     const t = await transcribe(new Blob(hf.chunks, { type: hf.rec.mimeType || 'audio/mp4' }));
-    let rest = wakeSplit(t, cfg.wakeword);
-    if (rest === null && hf.force) rest = t;
-    if (rest !== null && t) {
-      hf.force = false;
-      $('status').textContent = 'Toi : ' + t;
-      if (rest) await handle(rest); else { speak('Oui ?'); hf.force = true; }
-    }
+    let rest = wakeSplit(t, cfg.wakeword); if (rest === null && hf.force) rest = t;
+    if (rest !== null && t) { hf.force = false; lastTouch = Date.now(); $('status').textContent = 'Toi : ' + t; if (rest) await handle(rest); else { mood('wow', 1500); sfx.wow(); speak('Oui ?'); hf.force = true; } }
   } catch (e) {
-    if (e.status === 429) { $('status').textContent = 'Limite gratuite atteinte, écoute en pause une minute'; await new Promise(r => setTimeout(r, 60000)); }
+    if (e.status === 429) { $('status').textContent = 'Limite gratuite atteinte, écoute en pause une minute'; await wait(60000); }
     else if (e.status === 401) { $('status').textContent = 'Clé Groq refusée, écoute coupée'; hfStop(); }
   }
   hf.busy = false;
 }
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const sr = { r: null, on: false, loop: false, shot: false };
+function srMake(continuous) {
+  const r = new SR(); r.lang = 'fr-FR'; r.interimResults = true; r.continuous = continuous; r.maxAlternatives = 1; return r;
+}
+function srOnce() {
+  if (sr.on) { try { sr.r.stop(); } catch (e) {} return; }
+  srLoopStop(); try { speechSynthesis.cancel(); } catch (e) {}
+  const r = srMake(false); sr.r = r; sr.on = true; sr.shot = true; let final = '';
+  r.onresult = e => { let t = ''; for (const res of e.results) t += res[0].transcript; showSay('« ' + t + ' »'); if (e.results[e.results.length - 1].isFinal) final = t; };
+  r.onerror = e => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') speak('Autorise le micro et la reconnaissance vocale pour Safari dans les réglages de l\'iPhone.', 'sad'); };
+  r.onend = () => { sr.on = false; sr.shot = false; act(''); if (final) { $('status').textContent = 'Toi : ' + final; handle(final); } else if (!$('say').textContent.startsWith('«')) {} srLoopStart(); };
+  try { r.start(); act('listen'); mood('wow', 1200); showSay('Je t\'écoute…'); } catch (e) { sr.on = false; }
+}
+function srLoopStart() {
+  if (!SR || !cfg.hands || sr.loop || sr.on || !unlocked || B.dataset.mood === 'sleep') return;
+  sr.loop = true; const r = srMake(true); sr.r = r;
+  r.onresult = e => {
+    const res = e.results[e.results.length - 1]; if (!res.isFinal) return;
+    const t = res[0].transcript.trim(); let rest = wakeSplit(t, cfg.wakeword);
+    if (rest === null && hf.force) rest = t;
+    if (rest === null) return;
+    hf.force = false; lastTouch = Date.now(); $('status').textContent = 'Toi : ' + t;
+    if (rest) handle(rest); else { mood('wow', 1500); sfx.wow(); speak('Oui ?'); hf.force = true; }
+  };
+  r.onend = () => { sr.loop = false; if (cfg.hands && !document.hidden && B.dataset.mood !== 'sleep') setTimeout(srLoopStart, 400); };
+  r.onerror = e => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { cfg.hands = false; save(); $('status').textContent = 'Reconnaissance vocale refusée'; } };
+  try { r.start(); $('status').textContent = 'J\'écoute. Dis « ' + cfg.wakeword + ' » puis ta demande'; } catch (e) { sr.loop = false; }
+}
+function srLoopStop() { if (sr.loop && sr.r) { sr.loop = false; const r = sr.r; r.onend = null; try { r.abort(); } catch (e) {} } sr.loop = false; }
 
 let rec = null, chunks = [], stream = null;
 async function toggleMic() {
   if (rec && rec.state === 'recording') { rec.stop(); return; }
-  if (hf.on) { hf.force = true; try { speechSynthesis.cancel(); } catch (e) {} mode(''); showSay('Je t\'écoute.'); return; }
-  if (!cfg.key) { speak('Le micro a besoin de la clé Groq. En attendant, écris-moi.'); return; }
-  if (!navigator.mediaDevices || !window.MediaRecorder) { speak('Le micro n\'est pas disponible ici. Écris-moi.'); return; }
+  if (SR) { srOnce(); return; }
+  if (!cfg.key) { speak('Ce navigateur ne sait pas m\'entendre sans clé Groq. Écris-moi, ou ajoute une clé dans les réglages.', 'sus'); return; }
+  if (hf.on) { hf.force = true; try { speechSynthesis.cancel(); } catch (e) {} act(''); showSay('Je t\'écoute.'); mood('wow', 1500); return; }
+  if (!navigator.mediaDevices || !window.MediaRecorder) { speak('Le micro n\'est pas disponible ici. Écris-moi.', 'sad'); return; }
   try {
     try { speechSynthesis.cancel(); } catch (e) {}
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    chunks = [];
-    rec = new MediaRecorder(stream);
-    rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true }); chunks = [];
+    rec = new MediaRecorder(stream); rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
     rec.onstop = async () => {
-      stream.getTracks().forEach(t => t.stop());
-      mode('think');
-      try {
-        const t = await transcribe(new Blob(chunks, { type: rec.mimeType || 'audio/mp4' }));
-        if (!t) { speak('Je n\'ai rien entendu.'); return; }
-        $('status').textContent = 'Toi : ' + t;
-        handle(t);
-      } catch (e) { speak(errText(e)); }
+      stream.getTracks().forEach(t => t.stop()); act('think');
+      try { const t = await transcribe(new Blob(chunks, { type: rec.mimeType || 'audio/mp4' })); act(''); if (!t) { speak('Je n\'ai rien entendu.', 'sus'); return; } $('status').textContent = 'Toi : ' + t; handle(t); }
+      catch (e) { act(''); speak(errText(e), 'sad'); }
     };
-    rec.start();
-    mode('listen');
-    showSay('Je t\'écoute. Touche le micro quand tu as fini.');
-  } catch (e) { mode(''); speak('Je n\'ai pas accès au micro. Autorise-le dans Safari.'); }
+    rec.start(); act('listen'); showSay('Je t\'écoute…');
+    if (actx) { const an = actx.createAnalyser(); an.fftSize = 1024; actx.createMediaStreamSource(stream).connect(an); const buf = new Uint8Array(1024); let last = Date.now(), spoke = false; const t0 = Date.now();
+      const iv = setInterval(() => { if (rec.state !== 'recording') { clearInterval(iv); return; } an.getByteTimeDomainData(buf); let s = 0; for (const v of buf) { const x = (v - 128) / 128; s += x * x; }
+        if (Math.sqrt(s / buf.length) > 0.03) { last = Date.now(); spoke = true; }
+        if ((spoke && Date.now() - last > 1200) || Date.now() - t0 > (spoke ? 15000 : 6000)) { clearInterval(iv); rec.stop(); } }, 80); }
+  } catch (e) { act(''); speak('Je n\'ai pas accès au micro. Autorise-le dans Safari.', 'sad'); }
 }
+document.addEventListener('visibilitychange', () => { if (document.hidden) hfStop(); else if (unlocked) { try { if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(() => {}); } catch (e) {} hfStart(); } });
 
-function tick() {
-  const now = new Date(), t = hhmm(now), day = now.toDateString();
-  $('clock').textContent = t;
-  if (timerEnd && Date.now() >= timerEnd) { timerEnd = 0; startRing('Le minuteur est terminé.'); }
-  if (cfg.alarm && t === cfg.alarm && alarmFiredOn !== day) { alarmFiredOn = day; startRing('C\'est l\'heure de se lever.'); }
-  subLine();
-}
-setInterval(tick, 1000); tick();
-function gaze() {
-  const b = document.body.classList;
-  const still = b.contains('think') || b.contains('night');
-  const x = Math.random() < 0.35 ? 0 : Math.round(Math.random() * 60 - 30), y = Math.round(Math.random() * 30 - 15);
-  if (!still) $('face').style.transform = 'translate(' + x + 'px,' + y + 'px)';
-  setTimeout(gaze, 2500 + Math.random() * 4500);
-}
-gaze();
-
-document.addEventListener('pointerdown', e => {
-  unlock();
-  poke();
-  if (document.body.classList.contains('night') && !document.body.classList.contains('ring')) { setNight(false); e.preventDefault(); }
-}, true);
-$('stop').onclick = () => { const wasAlarm = /lever/.test($('say').textContent); stopRing(); if (wasAlarm) brief(); else speak('C\'est noté.'); };
+/* ---------- boutons ---------- */
+document.querySelectorAll('button,.btn').forEach(b => b.addEventListener('pointerdown', () => { unlock(); lastTouch = Date.now(); }));
+$('dock').addEventListener('pointerdown', showDock);
+$('stop').onclick = () => { const wasAlarm = /Debout/.test($('say').textContent); stopRing(); if (wasAlarm) brief(); else speak('C\'est noté.', 'happy'); };
+$('bPlay').onclick = () => $('sPlay').classList.add('on');
 $('bBrief').onclick = brief;
-$('bNight').onclick = () => setTimeout(() => setNight(true), 50);
+$('bNight').onclick = () => { speak('Bonne nuit !', 'sleepy'); setTimeout(() => setNight(true), 1400); };
 $('bTimer').onclick = () => $('sTimer').classList.add('on');
 $('mic').onclick = toggleMic;
-$('form').onsubmit = e => { e.preventDefault(); const v = $('txt').value; $('txt').value = ''; $('txt').blur(); handle(v); };
+$('form').onsubmit = e => { e.preventDefault(); const v = $('txt').value; $('txt').value = ''; $('txt').blur(); B.classList.add('idle'); handle(v); };
 document.querySelectorAll('[data-min]').forEach(b => b.onclick = () => { $('sTimer').classList.remove('on'); setTimer(+b.dataset.min); });
-document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('.sheet').classList.remove('on'));
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => { b.closest('.sheet').classList.remove('on'); });
+document.querySelectorAll('.sheet').forEach(s => s.addEventListener('pointerdown', e => { if (e.target === s) s.classList.remove('on'); }));
 $('gear').onclick = () => {
   $('cName').value = cfg.name; $('cCity').value = cfg.city; $('cAlarm').value = cfg.alarm; $('cKey').value = cfg.key;
-  $('cHands').checked = !!cfg.hands; $('cWake').value = cfg.wakeword || 'robot';
+  $('cHands').checked = !!cfg.hands; $('cWake').value = cfg.wakeword; $('cMute').checked = !!cfg.mute;
   const sel = $('cVoice'); sel.textContent = '';
   const tags = ['basique', 'standard', 'Siri', 'améliorée', 'premium'];
   const auto = document.createElement('option'); auto.value = ''; auto.textContent = 'Automatique (la meilleure trouvée)'; sel.appendChild(auto);
-  frVoices().sort((a, b) => vQuality(b) - vQuality(a)).forEach(v => { const o = document.createElement('option'); o.value = v.voiceURI; o.textContent = v.name + ' · ' + tags[vQuality(v)] + ' · ' + v.lang; sel.appendChild(o); });
+  frVoices().sort((a, b) => vQuality(b) - vQuality(a)).forEach(v => { const o = document.createElement('option'); o.value = v.voiceURI; o.textContent = v.name + ' · ' + tags[vQuality(v)]; sel.appendChild(o); });
   sel.value = cfg.voice || '';
-  $('cfgmsg').textContent = cfg.chat ? 'Modèle utilisé : ' + cfg.chat : '';
+  $('cfgmsg').textContent = cfg.chat ? 'Cerveau : ' + cfg.chat : '';
   $('sCfg').classList.add('on');
 };
-$('cTest').onclick = () => { cfg.voice = $('cVoice').value; save(); speak('Voilà ma voix. Elle te convient ?'); };
+$('cTest').onclick = () => { cfg.voice = $('cVoice').value; cfg.mute = false; speak('Salut, c\'est moi, Néo. Elle te plaît, ma voix ?', 'happy'); };
 $('cSave').onclick = async () => {
-  const city = $('cCity').value.trim();
-  if (city !== cfg.city) { cfg.lat = cfg.lon = null; }
-  cfg.name = $('cName').value.trim(); cfg.city = city;
-  const key = $('cKey').value.trim();
-  if (key !== cfg.key) { cfg.key = key; cfg.chat = cfg.stt = ''; }
-  cfg.voice = $('cVoice').value; cfg.hands = $('cHands').checked; cfg.wakeword = ($('cWake').value.trim() || 'robot');
-  setAlarm($('cAlarm').value);
-  save();
-  hfStop(); hfStart();
-  if (!cfg.key) { $('cfgmsg').textContent = 'Enregistré, sans IA.'; $('status').textContent = 'Prêt, sans IA pour le moment'; return; }
-  $('cfgmsg').textContent = 'Vérification de la clé…';
-  try {
-    const p = await checkKey();
-    $('cfgmsg').textContent = p.chat ? 'Clé valide. Modèle : ' + p.chat + (p.stt ? ' · micro : ' + p.stt : ' · pas de modèle pour le micro') : 'Clé valide, mais aucun modèle de discussion trouvé.';
-    $('status').textContent = 'Prêt';
-  } catch (e) { $('cfgmsg').textContent = e.status === 401 ? 'Clé refusée par Groq.' : 'Impossible de vérifier la clé (' + (e.status || 'réseau') + ').'; }
+  const city = $('cCity').value.trim(); if (city !== cfg.city) { cfg.lat = cfg.lon = null; }
+  cfg.name = $('cName').value.trim(); cfg.city = city; cfg.voice = $('cVoice').value; cfg.mute = $('cMute').checked;
+  cfg.hands = $('cHands').checked; cfg.wakeword = $('cWake').value.trim() || 'néo';
+  const key = $('cKey').value.trim(); if (key !== cfg.key) { cfg.key = key; cfg.chat = cfg.stt = ''; }
+  setAlarm($('cAlarm').value); save(); hfStop(); hfStart();
+  if (!cfg.key) { $('cfgmsg').textContent = 'Enregistré.'; return; }
+  $('cfgmsg').textContent = 'Je vérifie la clé…';
+  try { const p = await checkKey(); $('cfgmsg').textContent = p.chat ? 'Clé valide. Néo peut discuter' + (p.stt ? ' et t\'entendre.' : '.') : 'Clé valide, mais aucun modèle trouvé.'; $('status').textContent = 'Néo est réveillé'; }
+  catch (e) { $('cfgmsg').textContent = e.status === 401 ? 'Clé refusée par Groq.' : 'Impossible de vérifier la clé (' + (e.status || 'réseau') + ').'; }
 };
 </script>
 </body>
