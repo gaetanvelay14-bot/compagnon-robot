@@ -18,8 +18,8 @@ body{padding:calc(env(safe-area-inset-top) + 8px) calc(env(safe-area-inset-right
 body.dim{filter:brightness(.45)}
 button,input,select{font-family:inherit;color:inherit}
 button{cursor:pointer}
-#wrap{height:100%;display:grid;gap:8px;grid-template-columns:1.05fr 1fr 1fr;transition:transform 2s}
-.col{display:flex;flex-direction:column;gap:8px;min-height:0}
+#wrap{height:100%;display:grid;gap:8px;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1fr);transition:transform 2s}
+.col{display:flex;flex-direction:column;gap:8px;min-height:0;min-width:0}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;min-height:0;position:relative}
 .grow{flex:1;display:flex;flex-direction:column}
 .lab{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
@@ -56,7 +56,7 @@ li .when{margin-left:auto;font-size:13px;color:var(--warn);font-variant-numeric:
 .ring svg{width:66px;height:66px;transform:rotate(-90deg)}
 .ring span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-variant-numeric:tabular-nums}
 .fbtns{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex:1}
-.chip{min-height:32px;padding:0 8px;border-radius:18px;border:1px solid var(--line);background:transparent;font-size:13px}
+.chip{min-height:32px;padding:0 4px;min-width:0;border-radius:18px;border:1px solid var(--line);background:transparent;font-size:13px}
 .chip.on{background:var(--acc);color:#032A22;border-color:var(--acc);font-weight:700}
 #fstate{font-size:11px;color:var(--mut);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mk{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-top:1px solid var(--line);font-size:15px}
@@ -69,7 +69,7 @@ li .when{margin-left:auto;font-size:13px;color:var(--warn);font-variant-numeric:
 #cd{display:flex;align-items:baseline;gap:10px;white-space:nowrap;overflow:hidden}
 #cdn{font-size:30px;font-weight:300;line-height:1}
 #cdl{font-size:12px;color:var(--mut);overflow:hidden;text-overflow:ellipsis}
-#toast{position:fixed;left:50%;top:14px;transform:translate(-50%,-140%);background:var(--acc);color:#032A22;padding:12px 18px;border-radius:14px;font-weight:700;font-size:16px;transition:transform .35s;z-index:9;max-width:90%;text-align:center}
+#toast{position:fixed;left:50%;top:14px;transform:translate(-50%,-300%);background:var(--acc);color:#032A22;padding:12px 18px;border-radius:14px;font-weight:700;font-size:16px;transition:transform .35s;z-index:9;max-width:90%;text-align:center}
 #toast.on{transform:translate(-50%,0)}
 #ring{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;z-index:8;padding:24px;text-align:center}
 #ring.on{display:flex}
@@ -103,7 +103,7 @@ label input{height:44px;border-radius:12px;border:1px solid var(--line);backgrou
       <div id="time">--:--</div>
       <div id="date"></div>
       <div id="hello"></div>
-      <button id="gear2" aria-label="Réglages" style="position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--mut);display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
+      <button id="gear2" aria-label="Réglages" style="position:absolute;bottom:10px;right:10px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--mut);display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
     </div>
     <div class="card grow">
       <div class="lab"><span>Météo</span><span id="wcity"></span></div>
